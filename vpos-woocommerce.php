@@ -1,12 +1,28 @@
 <?php
 
+/**
+ * Plugin Name:       vPOS Woocommerce Plugin
+ * Plugin URI:        https://vpos.ao
+ * Description:       The one stop shop for online payments in Angola, allowing you to process payments requests through vPOS.
+ * Version:           1.0
+ * Requires at least: 5.2
+ * Requires PHP:      7.2
+ * Author:            Next Business Solution
+ * Author URI:        https://github.com/alexjuca
+ * License:           GPL v2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       vpos-woocommerce-plugin
+ * Domain Path:       /languages
+ */
+
+
 	if (!defined('ABSPATH')) {
 		exit;
 	}
 
 	// Add settings link on plugin page
 	function your_plugin_settings_link($links) { 
-		$settings_link = '<a href="admin.php?page=wc-settings&tab=checkout&section=vpos-woocommerce">Settings</a>'; 
+		$settings_link = '<a href="admin.php?page=wc-settings&tab=checkout&section=vpos">Settings</a>'; 
 		array_unshift($links, $settings_link); 
 		return $links; 
 	}
@@ -25,14 +41,7 @@
 	    add_action( 'admin_notices', 'woocommerce_required_admin_notice' ); } 
     else
 	{
-		function log($message){
-			$log = new WC_Logger();
-			$log->add('vpos', $message );
-			echo '<script type="text/javascript">alert("' . $message . '")</script>';
-		
-		}
-
-		# Initialize Gateway
+    	# Initialize Gateway
 		add_action( 'plugins_loaded', 'init_vpos_gateway' );
 		function init_vpos_gateway()
 		{
@@ -49,10 +58,10 @@
 			}
 		}
 
-		# Add paymetnt method to payment gateway list
+		# Add payment method to payment gateway list
 		add_filter("woocommerce_payment_gateways","add_vpos");
 		function add_vpos($methods){
-			$methods[] = 'WP_Gateway_vpos';
+			$methods[] = 'WP_Vpos_Gateway';
 			return $methods;
 		}
 	}

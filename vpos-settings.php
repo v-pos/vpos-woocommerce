@@ -26,7 +26,7 @@ return array(
         'default' => __('Ao escolher vPOS Checkout como forma de pagamento, você finalizará
                  o seu pagamento por adicionar o seu número', 'vPOS')
     ),
-    'merchant_vpos_token' => array(
+    'vpos_token' => array(
         'title' => __('vPOS Token', 'vPOS'),
         'type' => 'title',
         'description' => 'O token de API fornecido por vPOS'
