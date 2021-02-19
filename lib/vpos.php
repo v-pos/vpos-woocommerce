@@ -1,6 +1,5 @@
 <?php
 
-include("uuid.php");
 
 class Vpos 
 {
@@ -9,17 +8,17 @@ class Vpos
     private $token;
     private $refund_url;
     private $payment_url;
-    private $http_client;
+    private $curl;
 
     public function __construct($pos_id, $token, $payment_url, $refund_url, $mode) 
     {
-        if ($mode == true) 
+        if ($mode == "yes") 
         {
             $this->api_endpoint = "https://api.vpos.ao/api/v1";
         } else {
             $this->api_endpoint = "https://sandbox.vpos.ao/api/v1";
         }
-        $this->http_client  = curl_init();
+        $this->curl         = curl_init();
         $this->token        = $token;
         $this->payment_url  = $payment_url;
         $this->refund_url   = $refund_url;
@@ -29,10 +28,10 @@ class Vpos
         $request_data["amount"] = $amount;
         $request_data["mobile"] = $mobile;
         $request_data["type"]   = "payment";
+        $curl                   = $this->curl;
     
-        curl_setopt_array(
-        array(
-            CURLOPT_URL => $this->$api_endpoint . "/transactions",
+        curl_setopt_array($this->curl, array(
+            CURLOPT_URL => $this->api_endpoint . "/transactions",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_POSTFIELDS => $request_data,
@@ -40,8 +39,14 @@ class Vpos
             CURLOPT_HTTPHEADER => array(
                 "Authorization: Bearer " . $this->token,
                 "Content-Type: application/json",
-                "Idempotency-Key: " . uuid(),
+                "Idempotency-Key: ",
             )
         ));
+        
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response;
+        return $response;
     }
 }
