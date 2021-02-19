@@ -56,10 +56,16 @@ return array(
         'desc_tip' => true
     ),
     'vpos_environment' => array(
-        'title'       => __( 'Modo Sandbox', 'vPOS' ),
+        'title'       => __('Modo Sandbox', 'vPOS'),
         'type'        => 'checkbox',
-        'label'       => __( 'Habilitar modo Sandbox', 'vPOS' ),
+        'label'       => __('Habilitar modo Sandbox', 'vPOS'),
         'default'     => 'no',
         'description' => "O ambiente que será usado e.g SANDBOX ou PRODUCTION",
-    )	
+    ),
+    'merchant' => array(
+        'title'       => __('Nome da sua loja ou comerciante', 'vPOS' ),
+        'type'        => 'text',
+        'label'       => __('Nome do comerciante', 'vPOS' ),
+        'description' => "O nome do comerciante, loja ou estabelecimento",
+    )		
 );
