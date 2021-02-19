@@ -21,7 +21,7 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         $this->token = $this->get_option('vpos-token');
         $this->pos_id = $this->get_option('pos_id');
         $this->mode = 'yes' === $this->get_option('vpos_environment', 'no');
-        add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options'));
     }
 
     public function init_form_fields()
