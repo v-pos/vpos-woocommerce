@@ -11,9 +11,14 @@ class Vpos
     private $payment_url;
     private $http_client;
 
-    public function __construct($pos_id, $token, $payment_url, $refund_url) 
+    public function __construct($pos_id, $token, $payment_url, $refund_url, $mode) 
     {
-        $this->api_endpoint = "https://vpos.ao/api/v1/transactions";
+        if ($mode == true) 
+        {
+            $this->api_endpoint = "https://api.vpos.ao/api/v1";
+        } else {
+            $this->api_endpoint = "https://sandbox.vpos.ao/api/v1";
+        }
         $this->http_client  = curl_init();
         $this->token        = $token;
         $this->payment_url  = $payment_url;
@@ -27,7 +32,7 @@ class Vpos
     
         curl_setopt_array(
         array(
-            CURLOPT_URL => $this->$api_endpoint,
+            CURLOPT_URL => $this->$api_endpoint . "/transactions",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_POSTFIELDS => $request_data,
