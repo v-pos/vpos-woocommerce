@@ -6,9 +6,9 @@ if (!defined('ABSPATH')) {
 
 return array(
     'enabled' => array(
-        'title' => __('Enable/Disable', 'woocommerce'),
+        'title' => __('Activar/Desactivar', 'woocommerce'),
         'type' => 'checkbox',
-        'label' => __('Activate vPOS', 'vPOS'),
+        'label' => __('Activar vPOS', 'vPOS'),
         'default' => 'yes'
     ),
     'title' => array(
@@ -27,7 +27,7 @@ return array(
                  o seu pagamento por adicionar o seu número', 'vPOS')
     ),
     'vpos_token' => array(
-        'title' => __('vPOS Token', 'vPOS'),
+        'title' => __('Chave de API do vPOS', 'vPOS'),
         'type' => 'text',
         'description' => 'O token de API fornecido por vPOS'
     ),
@@ -38,9 +38,9 @@ return array(
         'desc_tip' => true
     ),
     'gpo_supervisor_card' => array(
-        'title' => __('Supervisor Card*', 'vPOS'),
+        'title' => __('Número de Cartão do Supervisor*', 'vPOS'),
         'type' => 'text',
-        'description' => __('Cartão do supervisor fornecido pela EMIS', 'woocommerce'),
+        'description' => __('Número do Cartão do supervisor fornecido pela EMIS', 'woocommerce'),
         'desc_tip' => true
     ),
     'vpos_refund_callback' => array(
