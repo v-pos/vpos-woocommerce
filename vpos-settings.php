@@ -32,7 +32,7 @@ return array(
         'description' => 'O token de API fornecido por vPOS'
     ),
     'gpo_pos_id' => array(
-        'title' => __('POS Id*', 'vPOS'),
+        'title' => __('ID do Ponto de Venda*', 'vPOS'),
         'type' => 'text',
         'description' => __('O ID do ponto de venda fornecido pela EMIS', 'vPOS'),
         'desc_tip' => true
