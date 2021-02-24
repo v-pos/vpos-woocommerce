@@ -18,14 +18,6 @@ return array(
         'default' => __('vPOS', 'woocommerce'),
         'desc_tip' => true
     ),
-    'description' => array(
-        'title' => __('Description', 'woocommerce'),
-        'type' => 'text',
-        'desc_tip' => true,
-        'description' => __('Descrição que o cliente verá durante o checkout.', 'woocommerce'),
-        'default' => __('Ao escolher vPOS Checkout como forma de pagamento, você finalizará
-                 o seu pagamento por adicionar o seu número', 'vPOS')
-    ),
     'vpos_token' => array(
         'title' => __('Chave de API do vPOS', 'vPOS'),
         'type' => 'text',

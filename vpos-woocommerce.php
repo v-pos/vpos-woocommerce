@@ -66,7 +66,7 @@
 			if (!is_checkout()) return $available_gateways;
 
 			if (array_key_exists('vpos', $available_gateways)) {
-				$available_gateways['vpos']->order_button_text = "Pay with vPOS";
+				$available_gateways['vpos']->order_button_text = "Proceed with vPOS";
 			}
 			return $available_gateways;
 		}

@@ -33,6 +33,9 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
 
     public function process_payment($orderId) 
     {
-
+        return array(
+            'result'   => 'success',
+            'redirect' => $this->get_return_url($order)
+        );
     }
 }
