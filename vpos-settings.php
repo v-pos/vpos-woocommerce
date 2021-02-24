@@ -46,26 +46,26 @@ return array(
     'vpos_refund_callback' => array(
         'title' => __('Refund Callback URL*', 'vPOS'),
         'type' => 'text',
-        'description' => __('O URL que tratará das notificações de estorno', 'woocommerce'),
+        'description' => __('O URL que tratará das notificações de estorno, e.g https://domain.co.ao/api/callback', 'woocommerce'),
         'desc_tip' => true
     ),
     'vpos_payment_callback' => array(
         'title' => __('Payment Callback URL*', 'vPOS'),
         'type' => 'text',
-        'description' => __('O URL que tratará das notificações de pagamento', 'woocommerce'),
+        'description' => __('O URL que tratará das notificações de pagamento, e.g https://domain.co.ao/api/callback', 'woocommerce'),
         'desc_tip' => true
     ),
     'vpos_environment' => array(
-        'title'       => __('Sandbox mode', 'vPOS'),
+        'title'       => __('Modo Sandbox', 'vPOS'),
         'type'        => 'checkbox',
         'label'       => __('Habilitar modo Sandbox', 'vPOS'),
         'default'     => 'no',
         'description' => "O ambiente que será usado e.g SANDBOX ou PRODUCTION",
     ),
     'merchant' => array(
-        'title'       => __('Your store name', 'vPOS' ),
+        'title'       => __('Nome da sua loja', 'vPOS' ),
         'type'        => 'text',
-        'label'       => __('Your store or company name', 'vPOS' ),
+        'label'       => __('Nome da sua loja', 'vPOS' ),
         'description' => "O nome do comerciante, loja ou estabelecimento",
     )		
 );
