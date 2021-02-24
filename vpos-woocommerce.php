@@ -54,7 +54,7 @@
 			if(get_query_var("payment_id") and get_query_var("id")){
 				$payment_id = get_query_var("payment_id");
 				$payment_request_id = get_query_var("id");
-				// include_once "payment_confirm.php";
+				include_once "src/payment_confirm.php";
 			}
 		}
 
@@ -63,5 +63,15 @@
 		function add_vpos($methods){
 			$methods[] = 'WP_Vpos_Gateway';
 			return $methods;
+		}
+
+		add_filter('woocommerce_available_payment_gateways', 'update_order_button');
+		function update_order_button($available_gateways) {
+			if (!is_checkout()) return $available_gateways;
+
+			if (array_key_exists('vpos', $available_gateways)) {
+				$available_gateways['vpos']->order_button_text = "Pay with vPOS";
+			}
+			return $available_gateways;
 		}
 	}
