@@ -27,26 +27,26 @@
 	}
 
 	$plugin = plugin_basename(__FILE__); 
-	add_filter("plugin_action_links_$plugin", 'your_plugin_settings_link' );
+	add_filter("plugin_action_links_$plugin", 'your_plugin_settings_link');
 
 	function woocommerce_required_admin_notice() {
 		echo   '<div class="updated error notice"><p>';
-			echo    _e( '<b>vPOS Woocommerce</b> É necessário instalar o WooCommerce primeiro!', 'my-text-domain' ); 
+			echo    _e('<b>vPOS Woocommerce</b> É necessário instalar o WooCommerce primeiro!', 'my-text-domain'); 
 		echo  '</p></div>';
 	}
 
-	if (!in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' )))) {
-	    add_action( 'admin_notices', 'woocommerce_required_admin_notice' ); } 
+	if (!in_array('woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option('active_plugins')))) {
+	    add_action('admin_notices', 'woocommerce_required_admin_notice'); } 
     else
 	{
     
-		add_action( 'plugins_loaded', 'init_vpos_gateway' );
+		add_action('plugins_loaded', 'init_vpos_gateway');
 		function init_vpos_gateway()
 		{
 			include "payment_gateway.php";
 		}
 
-		add_action('template_redirect', 'init_vpos_payment_gateway' );
+		add_action('template_redirect', 'init_vpos_payment_gateway');
 		function init_vpos_payment_gateway(){
 			if(get_query_var("payment_id") and get_query_var("id")){
 				$payment_id = get_query_var("payment_id");
@@ -69,5 +69,15 @@
 				$available_gateways['vpos']->order_button_text = "Proceed with vPOS";
 			}
 			return $available_gateways;
+		}
+
+		//add_action('init', 'storeInfoInCookies');
+		function storeInfoInCookies($merchant, $total_amount) {
+			setcookie("merchant", $merchant, time() + 3600, "/");
+			setcookie("total_amount", $total_amount, time() + 3600, "/");
+		}
+
+		function formatTotalAmount($total_amount) {
+    		return number_format(sprintf('%0.2f', preg_replace("/[^0-9.]/", "", $total_amount)), 2) . " Kz";
 		}
 	}
