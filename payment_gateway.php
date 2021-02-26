@@ -16,11 +16,11 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         $this->init_form_fields();
         $this->init_settings();
         $this->has_fields = true;
-        $this->method_title = "vPOS ";
+        $this->method_title = "Multicaixa Express";
         $this->description = "The one stop shop for online payments in Angola, allowing you to process payments requests through vPOS.";
         $this->title = $this->get_option('title');
         $this->method_description = "The one stop shop for online payments in Angola, allowing you to process payments requests through vPOS.";
-        $this->icon = "https://developer.vpos.ao/images/logo-366e50cc.png";
+        $this->icon = "https://raw.githubusercontent.com/nextbss/vpos-woocommerce-checkout-widget/main/assets/img/logo.svg?token=ABH4VC2AHQCKTNCSLTI6AKTAIHVGM";
         $this->token = $this->get_option('vpos-token');
         $this->pos_id = $this->get_option('gpo_pos_id');
         $this->mode = 'yes' === $this->get_option('vpos_environment', 'no');
