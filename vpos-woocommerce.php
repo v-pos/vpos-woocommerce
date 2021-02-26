@@ -66,7 +66,7 @@
 			if (!is_checkout()) return $available_gateways;
 
 			if (array_key_exists('vpos', $available_gateways)) {
-				$available_gateways['vpos']->order_button_text = "Proceed with vPOS";
+				$available_gateways['vpos']->order_button_text = "Proceed with Muticaixa Express";
 			}
 			return $available_gateways;
 		}
@@ -78,6 +78,6 @@
 		}
 
 		function formatTotalAmount($total_amount) {
-    		return number_format(sprintf('%0.2f', preg_replace("/[^0-9.]/", "", $total_amount)), 2) . " Kz";
+    		return number_format(sprintf('%0.2f', preg_replace("/[^0-9.]/", "", $total_amount)), 2, ".", ",") . " Kz";
 		}
 	}
