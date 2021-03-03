@@ -9,6 +9,7 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
     private $pos_id;
     private $mode;
     private $merchant;
+    private $orderId;
 
     public function __construct()
     {
@@ -35,6 +36,7 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
 
     public function process_payment($orderId) 
     {
+        $this->orderId = $orderId;
         storeInfoInCookies($this->merchant, $this->get_order_total());
         return array(
             'result'   => 'success',
