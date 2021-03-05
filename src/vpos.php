@@ -26,7 +26,16 @@ class Vpos {
             $this->http_code = 202;
             $this->data["message"] = $this->http_message;
             $this->data["code"] = $this->http_code;
-            $this->data["location"] = substr($this->location, $LOCATION_INDEX);
+            $this->data["location"] = substr($this->location, $this->LOCATION_INDEX);
+            return $this->data;
+        }
+
+        if ($this->contains($this->http_response_header, "See Other") == 1) {
+            $this->http_message =  "See Other";
+            $this->http_code = 303;
+            $this->data["message"] = $this->http_message;
+            $this->data["code"] = $this->http_code;
+            $this->data["location"] = substr($this->location, $this->LOCATION_INDEX);
             return $this->data;
         }
 
@@ -145,6 +154,24 @@ class Vpos {
             "Authorization: Bearer " . $this->token,
             "Content-Type: application/json",
             "Accept: application/json",
+        ));
+
+        curl_exec($this->curl);
+
+        return $this->getResponse();
+    }
+
+    public function pollResource($id) {
+        curl_setopt($this->curl, CURLOPT_URL, $this->api_endpoint  . "/requests/" . $id);
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($this->curl, CURLOPT_HEADERFUNCTION, array($this, "handle_headers"));
+        curl_setopt($this->curl, CURLOPT_ENCODING, "");
+        curl_setopt($this->curl, CURLOPT_MAXREDIRS, 10);
+        curl_setopt($this->curl, CURLOPT_TIMEOUT, 0);
+        curl_setopt($this->curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array(
+            "Authorization: Bearer " . $this->token
         ));
 
         curl_exec($this->curl);
