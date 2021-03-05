@@ -11,6 +11,7 @@ class Vpos {
     private $location;
     private $http_code;
     private $http_message;
+    private $LOCATION_INDEX = 27;
     private $data = array("message"=>null, "code"=>null, "location"=>null); 
 
     public function getLocation() {
@@ -25,7 +26,7 @@ class Vpos {
             $this->http_code = 202;
             $this->data["message"] = $this->http_message;
             $this->data["code"] = $this->http_code;
-            $this->data["location"] = $this->location;
+            $this->data["location"] = substr($this->location, $LOCATION_INDEX);
             return $this->data;
         }
 
