@@ -95,10 +95,8 @@ class Vpos {
         return $this->data;
     }
 
-    public function __construct($pos_id, $token, $payment_url, $refund_url, $mode) 
-    {
-        if ($mode == "yes") 
-        {
+    public function __construct($pos_id, $token, $payment_url, $refund_url, $mode) {
+        if ($mode == "yes") {
             $this->api_endpoint = "https://sandbox.vpos.ao/api/v1";
         } else {
             $this->api_endpoint = "https://api.vpos.ao/api/v1";
