@@ -25,17 +25,15 @@ $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url, $mode);
 if ($gateway == null) {
     echo json_encode("gateway is null");
 } else {
-    $response = $vpos->newPayment($mobile, $amount);
+    $response_data = $vpos->newPayment($mobile, $amount);
 
-    error_log("vpos: " . $response);
-
-    if ($response == "Bad Request" || $response == '"Bad Request"') {
+    if ($response_data["message"] == "Accepted") {
         header('Content-Type: application/json');
-        http_response_code(400);
-        echo $response;
+        http_response_code($response_data["code"]);
+        echo $response_data["location"];
     } else {
         header('Content-Type: application/json');
-        http_response_code(202);
-        echo $response;
+        http_response_code($response_data["code"]);
+        echo $response_data["message"];
     }
 }
