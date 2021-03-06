@@ -51,6 +51,20 @@ class RequestHandler {
             echo $response_data["message"];
         }
     }
+
+    public function handleGetTransaction($vpos, $id) {
+        $response_data = $vpos->getTransaction($id);
+
+        if ($response_data["code"] == 200) {
+            header('Content-Type: application/json');
+            http_response_code($response_data["code"]);
+            echo $response_data["body"];
+        } else {
+            header('Content-Type: application/json');
+            http_response_code($response_data["code"]);
+            echo $response_data["body"];
+        }
+    }
 }
 
 $handler = new RequestHandler();
@@ -69,7 +83,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $id = $_GET['id'];
-    $handler->handlePollResource($vpos, $id);
+    $type = $_GET['type'];
+
+    if ($type == 'poll') {
+        $handler->handlePollResource($vpos, $id);
+    } 
+    
+    if ($type == 'get') {
+        $handler->handleGetTransaction($vpos, $id);
+    }
+    
 }
 
 
