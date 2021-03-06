@@ -12,7 +12,8 @@ class Vpos {
     private $http_code;
     private $http_message;
     private $LOCATION_INDEX = 27;
-    private $data = array("message"=>null, "code"=>null, "location"=>null); 
+    private $body;
+    private $data = array("message"=>null, "code"=>null, "location"=>null, "body"=>null); 
 
     public function getLocation() {
         return $this->location;
@@ -35,7 +36,7 @@ class Vpos {
             $this->http_code = 303;
             $this->data["message"] = $this->http_message;
             $this->data["code"] = $this->http_code;
-            $this->data["location"] = substr($this->location, $this->LOCATION_INDEX);
+            $this->data["location"] = substr($this->location, 31);
             return $this->data;
         }
 
@@ -177,5 +178,27 @@ class Vpos {
         curl_exec($this->curl);
 
         return $this->getResponse();
+    }
+
+    public function organizeResponseData($response) {
+        $this->data['body'] = $response;
+        $this->data['code'] = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
+        return $this->data;
+    }
+
+    public function getTransaction($id) {
+        curl_setopt($this->curl, CURLOPT_URL, $this->api_endpoint  . "/transactions/" . $id);
+        curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($this->curl, CURLOPT_ENCODING, "");
+        curl_setopt($this->curl, CURLOPT_MAXREDIRS, 10);
+        curl_setopt($this->curl, CURLOPT_TIMEOUT, 0);
+        curl_setopt($this->curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($this->curl, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($this->curl, CURLOPT_HTTPHEADER, array(
+            "Authorization: Bearer " . $this->token
+        ));
+
+        $response = curl_exec($this->curl);
+        return $this->organizeResponseData($response);
     }
 }
