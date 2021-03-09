@@ -10,6 +10,7 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
     private $mode;
     private $merchant;
     private $orderId;
+    private $page_id;
 
     public function __construct()
     {
@@ -26,6 +27,7 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         $this->pos_id = $this->get_option('gpo_pos_id');
         $this->mode = 'yes' === $this->get_option('vpos_environment', 'no');
         $this->merchant = $this->get_option('merchant');
+        $this->page_id = $this->get_option('payment_page_id');
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
     }
 
@@ -40,7 +42,7 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         storeInfoInCookies($this->merchant, $this->get_order_total());
         return array(
             'result'   => 'success',
-            'redirect' => site_url() . "/?page_id=36"
+            'redirect' => site_url() . "/?page_id=" . $this->page_id . ""
         );
     }
 }
