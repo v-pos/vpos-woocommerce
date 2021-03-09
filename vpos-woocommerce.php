@@ -77,6 +77,6 @@
 		}
 
 		function formatTotalAmount($total_amount) {
-    		return number_format(sprintf('%0.2f', preg_replace("/[^0-9.]/", "", $total_amount)), 2, ".", ",") . " Kz";
+    		return number_format(sprintf('%0.2f', preg_replace("/[^0-9.]/", "", $total_amount)), 2, ",", ".") . " Kz";
 		}
 	}
