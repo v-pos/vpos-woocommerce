@@ -527,7 +527,7 @@ p {
 
 date_default_timezone_set("Africa/Luanda");
 
-if (empty($_COOKIE['merchant'])) {
+if (empty($_COOKIE['vpos_merchant'])) {
   echo("<script>location.href = '". site_url() ."'</script>");
 } 
 ?>
@@ -535,7 +535,7 @@ if (empty($_COOKIE['merchant'])) {
 <!DOCTYPE html>
 <html>
   <head>
-    <title>vPOS Checkout - <?php if ($_COOKIE['merchant'] != "") { echo $_COOKIE['merchant']; } else { echo ""; } ?></title>
+    <title>vPOS Checkout - <?php if ($_COOKIE['vpos_merchant'] != "") { echo $_COOKIE['vpos_merchant']; } else { echo ""; } ?></title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/google-libphonenumber@3.2.17/dist/libphonenumber.js" integrity="sha256-y7g6xQm+MB2sFTvdhBwEMDWg9sAUz9msCc2973e0wjg=" crossorigin="anonymous"></script>
   <head>
@@ -550,7 +550,7 @@ if (empty($_COOKIE['merchant'])) {
                     </tr>
                     <tr>
                         <th>Comerciante: </th>
-                        <th class="wg-info"><?php if ($_COOKIE['merchant'] != "") { echo $_COOKIE['merchant']; } else { echo ""; } ?></th>
+                        <th class="wg-info"><?php if ($_COOKIE['vpos_merchant'] != "") { echo $_COOKIE['vpos_merchant']; } else { echo ""; } ?></th>
                     </tr>
                     <tr>
                         <th>Método de pagamento: </th>
@@ -576,7 +576,7 @@ if (empty($_COOKIE['merchant'])) {
                         <tbody id="summary-table">
                           <tr>
                               <th class="wg-table-info">Montante: </th>
-                              <th class="wg-amount"><?php echo formatTotalAmount($_COOKIE['total_amount']); ?></th>
+                              <th class="wg-amount"><?php echo formatTotalAmount($_COOKIE['vpos_total_amount']); ?></th>
                           </tr>
                         </tbody>
                     </table>
@@ -642,9 +642,22 @@ if (empty($_COOKIE['merchant'])) {
         }
     }
 
+    function completeOrder() {
+      const orderId = <?php echo $_COOKIE['vpos_order_id']; ?>;
+      return axios.get("/wordpress/wp-content/plugins/vpos-woocommerce/handle.php?order_id=" + orderId + "&type=complete-order",
+      {validateStatus: (status => status < 300)})
+      .then(function (response) {
+        console.log(response);
+        return;
+      }).catch(function (error) {
+        console.log(error);
+        return;
+      });
+    }
+
     function get(id) {
-      return axios.get("/wordpress/wp-content/plugins/vpos-woocommerce/handle.php?id=" + id + "&type=get"
-      ,{validateStatus: (status => status < 400)})
+      return axios.get("/wordpress/wp-content/plugins/vpos-woocommerce/handle.php?id=" + id + "&type=get",
+      {validateStatus: (status => status < 400)})
       .then(function (response) {
         if (response.status == 200) {
           if (response.data.status == "accepted") {
@@ -652,8 +665,11 @@ if (empty($_COOKIE['merchant'])) {
             var stateComponent = document.getElementById("state");
             var state = succeedComponent();
             stateComponent.replaceWith(state);
-            document.getElementById("submit").style.display = "initial";
-            document.getElementById("submit").textContent = "TENTAR NOVAMENTE";
+            document.getElementById("submit").style.display = "none";
+            clearInterval(this.timer);
+            console.log(response.data);
+            this.completeOrder();
+            return;
           }
 
           if (response.data.status == "rejected" && response.data.status_reason == 2000) {
@@ -664,10 +680,12 @@ if (empty($_COOKIE['merchant'])) {
             document.getElementById("submit").style.display = "initial";
             document.getElementById("submit").textContent = "TENTAR NOVAMENTE";
             clearInterval(this.timer);
+            return;
           }
 
           showErrorMessage(response.data.status_reason);
           console.log(response.data);
+          return;
         }
       }).catch(function (error) {
         var stateComponent = document.getElementById("state");
@@ -684,6 +702,7 @@ if (empty($_COOKIE['merchant'])) {
           if (response.status == 303) {
             console.log(response);
             get(response.data);
+            return;
           } 
           if (response.status == 200) {
             console.log(response);
@@ -731,7 +750,7 @@ if (empty($_COOKIE['merchant'])) {
             }
             
             if (distance < 0) {
-              clearInterval(time);
+              clearInterval(this.timer);
               var stateComponent = document.getElementById("state");
               var state = expiredComponent();
               stateComponent.replaceWith(state);
@@ -817,7 +836,7 @@ if (empty($_COOKIE['merchant'])) {
         console.log(this.mobile);
       } 
 
-      var total_amount = <?php echo $_COOKIE['total_amount']; ?>;
+      var total_amount = <?php echo $_COOKIE['vpos_total_amount']; ?>;
       if (isValidPhoneNumber(this.mobile)) {
         sendPaymentRequest(total_amount, this.mobile);
       }
