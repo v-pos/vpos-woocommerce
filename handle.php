@@ -58,7 +58,8 @@ class RequestHandler {
         if ($response_data["code"] == 200) {
             header('Content-Type: application/json');
             http_response_code($response_data["code"]);
-            echo $response_data["body"];
+            $response_data["decoded_body"]->{'status'} = "accepted";
+            echo json_encode($response_data["decoded_body"]);
         } else {
             header('Content-Type: application/json');
             http_response_code($response_data["code"]);
@@ -84,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $id = $_GET['id'];
     $type = $_GET['type'];
+    $order_id = $_GET['order_id'];
 
     if ($type == 'poll') {
         $handler->handlePollResource($vpos, $id);
@@ -91,6 +93,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     
     if ($type == 'get') {
         $handler->handleGetTransaction($vpos, $id);
+    }
+
+    if ($order_id != null && $type == 'complete-order') {
+        $order = wc_get_order($order_id);
+        $order->update_status('completed');
+        setcookie("vpos_merchant", $merchant, time() - 3600, "/");
+		setcookie("vpos_total_amount", $total_amount, time() - 3600, "/");
+		setcookie("vpos_order_id", $order_id, time() - 3600, "/");
+        header('Content-Type: application/json');
+        http_response_code(200);
     }
     
 }
