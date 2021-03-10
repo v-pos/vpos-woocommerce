@@ -71,9 +71,10 @@
 		}
 
 		//add_action('init', 'storeInfoInCookies');
-		function storeInfoInCookies($merchant, $total_amount) {
-			setcookie("merchant", $merchant, time() + 3600, "/");
-			setcookie("total_amount", $total_amount, time() + 3600, "/");
+		function storeInfoInCookies($merchant, $total_amount, $order_id) {
+			setcookie("vpos_merchant", $merchant, time() + 3600, "/");
+			setcookie("vpos_total_amount", $total_amount, time() + 3600, "/");
+			setcookie("vpos_order_id", $order_id, time() + 3600, "/");
 		}
 
 		function formatTotalAmount($total_amount) {
