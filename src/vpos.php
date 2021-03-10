@@ -13,7 +13,7 @@ class Vpos {
     private $http_message;
     private $LOCATION_INDEX = 27;
     private $body;
-    private $data = array("message"=>null, "code"=>null, "location"=>null, "body"=>null); 
+    private $data = array("message"=>null, "code"=>null, "location"=>null, "body"=>null, "decoded_body"=>null); 
 
     public function getLocation() {
         return $this->location;
@@ -111,6 +111,7 @@ class Vpos {
         } else {
             $this->api_endpoint = "https://api.vpos.ao/api/v1";
         }
+
         $this->curl         = curl_init();
         $this->token        = $token;
         $this->payment_url  = $payment_url;
@@ -158,7 +159,6 @@ class Vpos {
         ));
 
         curl_exec($this->curl);
-
         return $this->getResponse();
     }
 
@@ -182,6 +182,7 @@ class Vpos {
 
     public function organizeResponseData($response) {
         $this->data['body'] = $response;
+        $this->data['decoded_body'] = json_decode($response);
         $this->data['code'] = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
         return $this->data;
     }
