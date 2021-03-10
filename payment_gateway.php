@@ -39,7 +39,7 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
     public function process_payment($orderId) 
     {
         $this->orderId = $orderId;
-        storeInfoInCookies($this->merchant, $this->get_order_total());
+        storeInfoInCookies($this->merchant, $this->get_order_total(), $orderId);
         return array(
             'result'   => 'success',
             'redirect' => site_url() . "/?page_id=" . $this->page_id . ""
