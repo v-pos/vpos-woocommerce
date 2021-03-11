@@ -58,7 +58,6 @@ class RequestHandler {
         if ($response_data["code"] == 200) {
             header('Content-Type: application/json');
             http_response_code($response_data["code"]);
-            $response_data["decoded_body"]->{'status'} = "accepted";
             echo json_encode($response_data["decoded_body"]);
         } else {
             header('Content-Type: application/json');
