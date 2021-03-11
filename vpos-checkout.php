@@ -588,7 +588,8 @@ if (empty($_COOKIE['vpos_merchant'])) {
             </div>
         </div>
         <div class="wg-secure">
-            <a href=<?php echo wc_get_checkout_url(); ?>>Voltar para o Checkout </a>
+            <a id="url" href=<?php echo wc_get_checkout_url(); ?>;
+            >Voltar para o Checkout </a>
         </div>
     <script>
 
@@ -598,7 +599,6 @@ if (empty($_COOKIE['vpos_merchant'])) {
     var timer = null;
     var numberIsAdded = false;
   
-
     function isValidPhoneNumber(mobile) {
       var phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
       var number = phoneUtil.parse(mobile);
@@ -647,6 +647,11 @@ if (empty($_COOKIE['vpos_merchant'])) {
       return axios.get("/wordpress/wp-content/plugins/vpos-woocommerce/handle.php?order_id=" + orderId + "&type=complete-order",
       {validateStatus: (status => status < 300)})
       .then(function (response) {
+        document.getElementById("url").innerText = "Ir para o sumário da compra"
+        document.getElementById("url").href = "<?php 
+                    $order = wc_get_order($_COOKIE['vpos_order_id']);
+                    echo $order->get_checkout_order_received_url(); 
+            ?>";
         console.log(response);
         return;
       }).catch(function (error) {
