@@ -672,7 +672,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
             return;
           }
 
-          if (response.data.status == "rejected" && response.data.status_reason == 2000) {
+          if (response.data.status == "rejected" && response.data.status_reason != null) {
             this.state == "rejected";
             var stateComponent = document.getElementById("state");
             var state = errorComponent();
@@ -680,10 +680,10 @@ if (empty($_COOKIE['vpos_merchant'])) {
             document.getElementById("submit").style.display = "initial";
             document.getElementById("submit").textContent = "TENTAR NOVAMENTE";
             clearInterval(this.timer);
+            showErrorMessage(response.data.status_reason);
             return;
           }
 
-          showErrorMessage(response.data.status_reason);
           return;
         }
       }).catch(function (error) {
