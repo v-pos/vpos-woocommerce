@@ -4,6 +4,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/wordpress/wp-load.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/wordpress/wp-content/plugins/woocommerce/woocommerce.php');
 require("src/vpos.php");
 require("src/request_handler.php");
+require("src/vpos_order_handler.php");
 
 if (!defined('ABSPATH')) {
     exit;
@@ -18,6 +19,11 @@ $payment_url = $settings['vpos_payment_callback'];
 $refund_url = $settings['vpos_refund_callback'];
 $mode = $settings['vpos_environment'];
 
+if ($gateway == null) {
+    error_log("gateway has not been setup");
+    exit(1);
+}
+
 $handler = new RequestHandler();
 $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url, $mode);
 
@@ -25,11 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mobile = $_POST['mobile'];
     $amount = $_POST['amount'];
 
-    if ($gateway == null) {
-        echo json_encode("gateway is null");
-    } else {
-        $handler->handlePayment($vpos, $mobile, $amount);
-    }
+    $handler->handlePayment($vpos, $mobile, $amount);
 } 
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -46,11 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
     if ($order_id != null && $type == 'complete-order') {
-        $order = wc_get_order($order_id);
-        $order->update_status('completed');
-        setcookie("vpos_merchant", $merchant, time() - 3600, "/");
-		setcookie("vpos_total_amount", $total_amount, time() - 3600, "/");
-		setcookie("vpos_order_id", $order_id, time() - 3600, "/");
+        VposOrderHandler::completeOrder($order_id);
+        VposOrderHandler::flushOrderFromCookies();
         header('Content-Type: application/json');
         http_response_code(200);
     }
