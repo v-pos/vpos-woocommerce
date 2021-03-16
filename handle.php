@@ -3,6 +3,7 @@
 require($_SERVER['DOCUMENT_ROOT'] . '/wordpress/wp-load.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/wordpress/wp-content/plugins/woocommerce/woocommerce.php');
 require("src/vpos.php");
+require("src/request_handler.php");
 
 if (!defined('ABSPATH')) {
     exit;
@@ -16,56 +17,6 @@ $pos_id = $settings['gpo_pos_id'];
 $payment_url = $settings['vpos_payment_callback'];
 $refund_url = $settings['vpos_refund_callback'];
 $mode = $settings['vpos_environment'];
-
-class RequestHandler {
-
-    public function __construct() {
-
-    }
-
-    public function handlePayment($vpos, $mobile, $amount) {
-        
-        $response_data = $vpos->newPayment($mobile, $amount);
-
-        if ($response_data["message"] == "Accepted") {
-            header('Content-Type: application/json');
-            http_response_code($response_data["code"]);
-            echo $response_data["location"];
-        } else {
-            header('Content-Type: application/json');
-            http_response_code($response_data["code"]);
-            echo $response_data["message"];
-        }
-    }
-
-    public function handlePollResource($vpos, $id) {
-        $response_data = $vpos->pollResource($id);
-
-        if ($response_data["message"] == "See Other") {
-            header('Content-Type: application/json');
-            http_response_code($response_data["code"]);
-            echo $response_data["location"];
-        } else {
-            header('Content-Type: application/json');
-            http_response_code($response_data["code"]);
-            echo $response_data["message"];
-        }
-    }
-
-    public function handleGetTransaction($vpos, $id) {
-        $response_data = $vpos->getTransaction($id);
-
-        if ($response_data["code"] == 200) {
-            header('Content-Type: application/json');
-            http_response_code($response_data["code"]);
-            echo json_encode($response_data["decoded_body"]);
-        } else {
-            header('Content-Type: application/json');
-            http_response_code($response_data["code"]);
-            echo $response_data["body"];
-        }
-    }
-}
 
 $handler = new RequestHandler();
 $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url, $mode);
@@ -103,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         header('Content-Type: application/json');
         http_response_code(200);
     }
-    
 }
 
 
