@@ -607,9 +607,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
 
     function checkMobileNumber() {
       this.mobile = document.getElementById("mobile").value;
-      console.log(this.mobile);
       if (this.isValidPhoneNumber(this.mobile) == true) {
-        console.log(this.isValidPhoneNumber(this.mobile) == true);
         document.getElementById("submit").classList.add("button-active");
         document.getElementById("submit").classList.remove("button-disabled");
       } else {
@@ -652,10 +650,8 @@ if (empty($_COOKIE['vpos_merchant'])) {
                     $order = wc_get_order($_COOKIE['vpos_order_id']);
                     echo $order->get_checkout_order_received_url(); 
             ?>";
-        console.log(response);
         return;
       }).catch(function (error) {
-        console.log(error);
         return;
       });
     }
@@ -672,7 +668,6 @@ if (empty($_COOKIE['vpos_merchant'])) {
             stateComponent.replaceWith(state);
             document.getElementById("submit").style.display = "none";
             clearInterval(this.timer);
-            console.log(response.data);
             this.completeOrder();
             return;
           }
@@ -689,7 +684,6 @@ if (empty($_COOKIE['vpos_merchant'])) {
           }
 
           showErrorMessage(response.data.status_reason);
-          console.log(response.data);
           return;
         }
       }).catch(function (error) {
@@ -705,19 +699,13 @@ if (empty($_COOKIE['vpos_merchant'])) {
       .then(function (response) {
           this.state = "processing";
           if (response.status == 303) {
-            console.log(response);
             get(response.data);
             return;
           } 
-          if (response.status == 200) {
-            console.log(response);
-          }
-          
       }).catch(function (error){
             var stateComponent = document.getElementById("state");
             var state = errorComponent();
             stateComponent.replaceWith(state);
-            console.log(error);
       });
     }
 
@@ -736,7 +724,6 @@ if (empty($_COOKIE['vpos_merchant'])) {
           var state = confirmationComponent();
           stateComponent.replaceWith(state);
           document.getElementById("submit").style.display = "none";
-          console.log(response);
 
           var countDownDate = new Date().getTime() + 100000;
           this.timer = setInterval(function() {
@@ -838,7 +825,6 @@ if (empty($_COOKIE['vpos_merchant'])) {
     document.getElementById("submit").addEventListener("click", function() {
       if (this.mobile == "" || this.mobile == null) {
         this.mobile = document.getElementById("mobile").value;
-        console.log(this.mobile);
       } 
 
       var total_amount = <?php echo $_COOKIE['vpos_total_amount']; ?>;
