@@ -789,7 +789,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
       const state = document.createElement("div");
       state.id = "state";
       state.classList.add("wg-card");
-      state.innerHTML = "<div class='wg-state'><h5>Occorreu um erro ao efectuar o pagamento</h5><p class='error-text' id='error-message'></p><img class='wg-state-icon' src='https://raw.githubusercontent.com/nextbss/vpos-woocommerce-checkout-widget/main/assets/img/Error.png?token=ABH4VCZMZN75XQOQBNFQ4CDAJNKVQ'></div>";
+      state.innerHTML = "<div class='wg-state'><h5>Occorreu um erro ao efectuar o pagamento</h5><p class='error-text' id='error-message'></p><img class='wg-state-icon' src='https://backoffice.vpos.ao/images/error.png'></div>";
       return state;
     }
 
