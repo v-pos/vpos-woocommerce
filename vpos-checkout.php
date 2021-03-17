@@ -565,7 +565,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
                     
                 </div>
                 <div class="input-container">
-                    <img class="icon float" src="https://raw.githubusercontent.com/nextbss/vpos-woocommerce-checkout-widget/main/assets/img/logo.svg?token=ABH4VC5VKN4AB73RLRXLT5TAJNISS">
+                    <img class="icon float" src="https://backoffice.vpos.ao/images/mcx-logo.svg">
                     <input oninput="checkMobileNumber()" class="float" id="mobile" name="telephone" type="text" value="+244" placeholder="Digite o seu número de telemóvel" maxlength="13" required></span>
                 </div>
             </div>
