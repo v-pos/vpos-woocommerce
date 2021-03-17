@@ -810,7 +810,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
       state.classList.add("wg-card");
       state.classList.add("wg-state");
       document.getElementById("submit").style.display = "none";
-      state.innerHTML = "<h5>Pagamento efectuado com sucesso</h5><img class='wg-state-icon' src='https://raw.githubusercontent.com/nextbss/vpos-woocommerce-checkout-widget/main/assets/img/Confirmed.png?token=ABH4VC4ULCVOFSMIZ3PZPBDAJN2MK'>"
+      state.innerHTML = "<h5>Pagamento efectuado com sucesso</h5><img class='wg-state-icon' src='https://backoffice.vpos.ao/images/confirmed.png'>"
       return state;
     }
 
