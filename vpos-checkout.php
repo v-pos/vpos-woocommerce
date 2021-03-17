@@ -582,7 +582,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
                     </table>
                     <button type="button" id="submit" class="button">CONFIRMAR</button>
                     <di class="wg-secure">
-                        <p>Todos os pagamentos via vPOS são seguros <img src="https://raw.githubusercontent.com/nextbss/vpos-woocommerce-checkout-widget/main/assets/img/lock.svg?token=ABH4VC7IQG7S3WDT43RXJSLAJNKJQ"></p> 
+                        <p>Todos os pagamentos via vPOS são seguros <img src="https://backoffice.vpos.ao/images/mcx-lock.svg"></p> 
                     </div>
                 </div>
             </div>
