@@ -8,7 +8,7 @@
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            Next Business Solution
- * Author URI:        https://github.com/alexjuca
+ * Author URI:        https://github.com/nextbss
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       vpos-woocommerce-plugin
