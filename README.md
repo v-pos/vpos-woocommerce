@@ -1,6 +1,6 @@
 # vPOS woocommerce
 
-It is an easy and secure payment solution, adapted to the COVID-19 period.
+It is an easy and secure payment solution for WordPress/WooCommerce, adapted to the COVID-19 period.
 vPOS will transform the way you receive payments online, thus allowing you to
 your business takes advantage of the thousands of internet users who wish to shop in a way
 easy, fast and secure over the Internet.
@@ -9,17 +9,9 @@ This plugin currently works for the solutions listed below:
 
 EMIS GPO (Multicaixa Express)
 
-## Installation
-------------------------------------------
-```shell
-TODO
-```
+## Installation and Configuration
 
-## Configuration
-------------------------------------------
-```shell
-TODO
-```
+TO install and configure visit our wiki: [vPOS Wiki](https://github.com/nextbss/vpos-woocommerce/wiki/Instalação-e-configuração)
 
 ## Have any doubts?
 
