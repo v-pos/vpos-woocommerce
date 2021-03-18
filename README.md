@@ -1,5 +1,7 @@
 # vPOS woocommerce
 
+[![](https://img.shields.io/badge/nextbss-opensource-blue.svg)](https://www.nextbss.co.ao)
+
 It is an easy and secure payment solution for WordPress/WooCommerce, adapted to the COVID-19 period.
 vPOS will transform the way you receive payments online, thus allowing you to
 your business takes advantage of the thousands of internet users who wish to shop in a way
