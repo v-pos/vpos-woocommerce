@@ -128,7 +128,6 @@ input:focus ~ .bar:before, input:focus ~ .bar:after {
   opacity:0.5;
 }
 
-
 input:focus ~ .highlight {
   -webkit-animation:inputHighlighter 0.3s ease;
   -moz-animation:inputHighlighter 0.3s ease;
