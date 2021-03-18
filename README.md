@@ -1,7 +1,9 @@
 # vPOS woocommerce
 
-This plugin allows you to easily add support for payments to your woocommerce
-enabled wordpress store.
+It is an easy and secure payment solution, adapted to the COVID-19 period.
+vPOS will transform the way you receive payments online, thus allowing you to
+your business takes advantage of the thousands of internet users who wish to shop in a way
+easy, fast and secure over the Internet.
 
 This plugin currently works for the solutions listed below:
 
