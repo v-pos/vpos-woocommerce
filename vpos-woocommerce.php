@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name:       vPOS Woocommerce
+ * Plugin Name:       vPOS
  * Plugin URI:        https://vpos.ao
  * Description:       The one stop shop for online payments in Angola, allowing you to process payments requests through vPOS.
  * Version:           1.0
