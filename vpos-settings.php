@@ -55,15 +55,15 @@ return array(
         'description' => "O ambiente que será usado e.g SANDBOX ou PRODUCTION",
     ),
     'merchant' => array(
-        'title'       => __('Nome da sua loja', 'vPOS' ),
+        'title'       => __('Nome da sua loja', 'vPOS'),
         'type'        => 'text',
-        'label'       => __('Nome da sua loja', 'vPOS' ),
+        'label'       => __('Nome da sua loja', 'vPOS'),
         'description' => "O nome do comerciante, loja ou estabelecimento",
     ),
     'payment_page_id' => array(
-        'title'       => __('ID da página de pagamento', 'vPOS' ),
+        'title'       => __('ID da página de pagamento', 'vPOS'),
         'type'        => 'text',
-        'label'       => __('ID Da página de pagamento ', 'vPOS' ),
+        'label'       => __('ID Da página de pagamento ', 'vPOS'),
         'description' => "ID da página wordpress que será usado para apresentar a tela de pagamento Multicaixa Express do vPOS",
-    )		
+    )
 );

@@ -36,7 +36,7 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         $this->form_fields = include("vpos-settings.php");
     }
 
-    public function process_payment($orderId) 
+    public function process_payment($orderId)
     {
         $this->orderId = $orderId;
         storeInfoInCookies($this->merchant, $this->get_order_total(), $orderId);

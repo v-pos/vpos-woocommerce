@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $amount = $_POST['amount'];
 
     $handler->handlePayment($vpos, $mobile, $amount);
-} 
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $id = $_GET['id'];
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if ($type == 'poll') {
         $handler->handlePollResource($vpos, $id);
-    } 
+    }
     
     if ($type == 'get') {
         $handler->handleGetTransaction($vpos, $id);
@@ -54,5 +54,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         http_response_code(200);
     }
 }
-
-
