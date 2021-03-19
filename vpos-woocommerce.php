@@ -9,7 +9,7 @@
  * Requires PHP:      7.2
  * Author:            Next Business Solution
  * Author URI:        https://github.com/nextbss
- * License:           MIT License
+ * License:           GNU General Public License
  * Text Domain:       vpos-woocommerce-plugin
  * Domain Path:       /languages
  */
