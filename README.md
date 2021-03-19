@@ -4,11 +4,13 @@
 
 The number #1 payment solution in Angola
 
+<p align="center"><a href="#/"><img src="https://github.com/nextbss/vpos-woocommerce/blob/main/.wordpress-org/screenshot-3-0.5x.png" alt="vPOS"></a></p>
+
 This plugin currently works for the solutions listed below:
 
 EMIS GPO (Multicaixa Express)
 
-<p align="center"><a href="#/"><img src="https://github.com/nextbss/vpos-woocommerce/blob/main/.wordpress-org/screenshot-3-0.5x.png" alt="vPOS"></a></p>
+
 
 ## Installation and Configuration
 
