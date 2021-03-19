@@ -21,7 +21,7 @@ In case of any doubts, bugs, or the like, please leave an issue. We would love t
 
 ## License
 
-Copyright (C) <2021>  <Next Business Solutions>
+Copyright (C) 2021  Next Business Solutions
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
