@@ -74,7 +74,6 @@
             return $available_gateways;
         }
 
-        //add_action('init', 'storeInfoInCookies');
         function storeInfoInCookies($merchant, $total_amount, $order_id)
         {
             setcookie("vpos_merchant", $merchant, time() + 3600, "/");
