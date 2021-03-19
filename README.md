@@ -13,12 +13,12 @@ EMIS GPO (Multicaixa Express)
 
 ## Installation and Configuration
 
-TO install and configure visit our wiki: [vPOS Wiki](https://github.com/nextbss/vpos-woocommerce/wiki/Instalação-e-configuração)
+To install and configure visit our wiki: [vPOS Wiki](https://github.com/nextbss/vpos-woocommerce/wiki/Instalação-e-configuração)
 
 ## Have any doubts?
 
 In case of any doubts, bugs, or the like, please leave an issue. We would love to help.
 
-License
+## License
 
 The plugin is available as open source under the terms of the MIT License.
