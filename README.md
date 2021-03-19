@@ -8,6 +8,8 @@ This plugin currently works for the solutions listed below:
 
 EMIS GPO (Multicaixa Express)
 
+<p align="center"><a href="#/"><img src="https://github.com/nextbss/vpos-woocommerce/blob/main/.wordpress-org/screenshot-3-0.5x.png" alt="vPOS"></a></p>
+
 ## Installation and Configuration
 
 To install and configure visit our wiki: [vPOS Wiki](https://github.com/nextbss/vpos-woocommerce/wiki/Instalação-e-configuração)
