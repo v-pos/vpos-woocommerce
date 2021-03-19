@@ -8,7 +8,7 @@ Stable tag: 5.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-vPOS - Payment Gateway is a payment solution for Angolan based businesses.
+vPOS - The number #1 payment solution in Angola
 
 == Description ==
 

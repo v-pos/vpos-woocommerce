@@ -3,7 +3,7 @@
 /**
  * Plugin Name:       vPOS - Payment Gateway
  * Plugin URI:        https://vpos.ao
- * Description:       The one stop shop for online payments in Angola, allowing you to process payments requests through vPOS.
+ * Description:       The number #1 payment solution in Angola.
  * Version:           1.0
  * Requires at least: 5.2
  * Requires PHP:      7.2

@@ -30,9 +30,9 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         $this->init_settings();
         $this->has_fields = true;
         $this->method_title = "Multicaixa Express";
-        $this->description = "The one stop shop for online payments in Angola, allowing you to process payments requests through vPOS.";
+        $this->description = "A solução número #1 para pagamentos online em Angola.";
         $this->title = $this->get_option('title');
-        $this->method_description = "The one stop shop for online payments in Angola, allowing you to process payments requests through vPOS.";
+        $this->method_description = "A solução número #1 para pagamentos online em Angola.";
         $this->icon = "https://backoffice.vpos.ao/images/mcx-logo.svg";
         $this->token = $this->get_option('vpos-token');
         $this->pos_id = $this->get_option('gpo_pos_id');
