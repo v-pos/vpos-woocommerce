@@ -1,5 +1,7 @@
 # vPOS woocommerce
 
+<p align="center"><a href="#/"><img src="https://github.com/nextbss/vpos-woocommerce/blob/main/.wordpress-org/vpos-logo.png" alt="vPOS"></a></p>
+
 [![](https://img.shields.io/badge/nextbss-opensource-blue.svg)](https://www.nextbss.co.ao)
 
 The number #1 payment solution in Angola
