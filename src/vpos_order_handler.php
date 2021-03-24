@@ -14,6 +14,10 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 class VposOrderHandler {
     
     public static function completeOrder($order_id) {
