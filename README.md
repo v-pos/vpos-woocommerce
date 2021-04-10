@@ -10,7 +10,7 @@ The number #1 payment solution in Angola
 
 This plugin currently works for the solutions listed below:
 
-EMIS GPO (Multicaixa Express)
+- EMIS GPO (Multicaixa Express)
 
 ## Installation and Configuration
 
