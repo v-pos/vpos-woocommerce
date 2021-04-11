@@ -1,4 +1,4 @@
-# vPOS WooCommerce
+# vPOS - WooCommerce
 
 <p align="center"><a href="#/"><img src="https://github.com/nextbss/vpos-woocommerce/blob/main/.wordpress-org/vpos-logo.png" alt="vPOS"></a></p>
 
