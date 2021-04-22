@@ -33,6 +33,11 @@ if ($gateway == null) {
 
 $settings = $gateway->settings;
 
+if ($settings == null) {
+    error_log("settings have not been defined");
+    exit(1);
+}
+
 $token = $settings['vpos_token'];
 $pos_id = $settings['gpo_pos_id'];
 $payment_url = $settings['vpos_payment_callback'];
