@@ -25,18 +25,24 @@ if (!defined('ABSPATH')) {
 }
 
 $gateway = WC()->payment_gateways->payment_gateways()['vpos'];
+
+if ($gateway == null) {
+    error_log("gateway has not been setup");
+    exit(1);
+}
+
 $settings = $gateway->settings;
+
+if ($settings == null) {
+    error_log("settings have not been defined");
+    exit(1);
+}
 
 $token = $settings['vpos_token'];
 $pos_id = $settings['gpo_pos_id'];
 $payment_url = $settings['vpos_payment_callback'];
 $refund_url = $settings['vpos_refund_callback'];
 $mode = $settings['vpos_environment'];
-
-if ($gateway == null) {
-    error_log("gateway has not been setup");
-    exit(1);
-}
 
 $handler = new RequestHandler();
 $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url, $mode);
