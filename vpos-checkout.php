@@ -641,7 +641,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
 
     function completeOrder() {
       const orderId = <?php echo $_COOKIE['vpos_order_id']; ?>;
-      return axios.get("/wordpress/wp-content/plugins/vpos-woocommerce/handle.php?order_id=" + orderId + "&type=complete-order",
+      return axios.get("/wp-content/plugins/vpos-woocommerce/handle.php?order_id=" + orderId + "&type=complete-order",
       {validateStatus: (status => status < 300)})
       .then(function (response) {
         document.getElementById("url").innerText = "Ir para o sumário da compra"
@@ -656,7 +656,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
     }
 
     function get(id) {
-      return axios.get("/wordpress/wp-content/plugins/vpos-woocommerce/handle.php?id=" + id + "&type=get",
+      return axios.get("/wp-content/plugins/vpos-woocommerce/handle.php?id=" + id + "&type=get",
       {validateStatus: (status => status < 400)})
       .then(function (response) {
         if (response.status == 200) {
@@ -693,7 +693,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
     }
 
     function poll(id) {
-      return axios.get("/wordpress/wp-content/plugins/vpos-woocommerce/handle.php?id=" + id + "&type=poll"
+      return axios.get("/wp-content/plugins/vpos-woocommerce/handle.php?id=" + id + "&type=poll"
       ,{validateStatus: (status) => status < 400 })
       .then(function (response) {
           this.state = "processing";
@@ -713,7 +713,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
       var form = new FormData();
       form.append('mobile', mobile_no_prefix);
       form.append('amount', parseFloat(amount));
-      return axios.post("/wordpress/wp-content/plugins/vpos-woocommerce/handle.php", 
+      return axios.post("/wp-content/plugins/vpos-woocommerce/handle.php", 
        form,
       headers)
       .then(response => {
