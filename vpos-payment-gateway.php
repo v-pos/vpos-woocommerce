@@ -2,13 +2,13 @@
 
 /**
  * Plugin Name:       vPOS - Payment Gateway
- * Plugin URI:        https://vpos.ao
- * Description:       The number #1 payment solution in Angola.
+ * Plugin URI:        https://github.com/v-pos/vpos-woocommerce
+ * Description:       Uma melhor forma de aceitar pagamentos.
  * Version:           1.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
- * Author:            Next Business Solution
- * Author URI:        https://github.com/nextbss
+ * Author:            vPOS
+ * Author URI:        https://vpos.ao
  * License:           GNU General Public License
  * Text Domain:       vpos-woocommerce-plugin
  * Domain Path:       /languages
@@ -31,7 +31,7 @@
     function woocommerce_required_admin_notice()
     {
         echo   '<div class="updated error notice"><p>';
-        echo    _e('<b>vPOS Woocommerce</b> É necessário instalar o WooCommerce primeiro!', 'my-text-domain');
+        echo    _e('<b>vPOS WooCommerce</b> É necessário instalar o WooCommerce primeiro!', 'my-text-domain');
         echo  '</p></div>';
     }
 
@@ -69,7 +69,7 @@
             }
 
             if (array_key_exists('vpos', $available_gateways)) {
-                $available_gateways['vpos']->order_button_text = "Proceed with Muticaixa Express";
+                $available_gateways['vpos']->order_button_text = "Proceder com Muticaixa Express";
             }
             return $available_gateways;
         }

@@ -14,8 +14,8 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-require($_SERVER['DOCUMENT_ROOT'] . '/wordpress/wp-load.php');
-include_once($_SERVER['DOCUMENT_ROOT'] . '/wordpress/wp-content/plugins/woocommerce/woocommerce.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
+include_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/woocommerce/woocommerce.php');
 require("src/vpos.php");
 require("src/request_handler.php");
 require("src/vpos_order_handler.php");
