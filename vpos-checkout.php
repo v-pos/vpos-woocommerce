@@ -593,6 +593,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
     <script>
 
     const ONE_SECOND = 1000;
+    const URL = "<?php echo get_home_url(); ?>";
     var mobile = "";
     var state = "initial";
     var timer = null;
@@ -641,7 +642,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
 
     function completeOrder() {
       const orderId = <?php echo $_COOKIE['vpos_order_id']; ?>;
-      return axios.get("/wp-content/plugins/vpos-woocommerce/handle.php?order_id=" + orderId + "&type=complete-order",
+      return axios.get(URL + "/wp-content/plugins/vpos-woocommerce/handle.php?order_id=" + orderId + "&type=complete-order",
       {validateStatus: (status => status < 300)})
       .then(function (response) {
         document.getElementById("url").innerText = "Ir para o sumário da compra"
@@ -656,7 +657,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
     }
 
     function get(id) {
-      return axios.get("/wp-content/plugins/vpos-woocommerce/handle.php?id=" + id + "&type=get",
+      return axios.get(URL + "/wp-content/plugins/vpos-woocommerce/handle.php?id=" + id + "&type=get",
       {validateStatus: (status => status < 400)})
       .then(function (response) {
         if (response.status == 200) {
@@ -693,7 +694,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
     }
 
     function poll(id) {
-      return axios.get("/wp-content/plugins/vpos-woocommerce/handle.php?id=" + id + "&type=poll"
+      return axios.get(URL + "/wp-content/plugins/vpos-woocommerce/handle.php?id=" + id + "&type=poll"
       ,{validateStatus: (status) => status < 400 })
       .then(function (response) {
           this.state = "processing";
@@ -713,7 +714,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
       var form = new FormData();
       form.append('mobile', mobile_no_prefix);
       form.append('amount', parseFloat(amount));
-      return axios.post("/wp-content/plugins/vpos-woocommerce/handle.php", 
+      return axios.post(URL + "/wp-content/plugins/vpos-woocommerce/handle.php", 
        form,
       headers)
       .then(response => {
