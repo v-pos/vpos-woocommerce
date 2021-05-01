@@ -35,7 +35,7 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         $this->has_fields = true;
         $this->method_title = "Multicaixa Express";
         $this->description = "Uma melhor forma de aceitar pagamentos.";
-        $this->title = $this->get_option('title');
+        $this->title = "Multicaixa Express";
         $this->method_description = "Uma melhor forma de aceitar pagamentos.";
         $this->icon = "https://backoffice.vpos.ao/images/mcx-logo.svg";
         $this->token = $this->get_option('vpos-token');

@@ -25,13 +25,6 @@ return array(
         'label' => __('Activar vPOS', 'vPOS'),
         'default' => 'yes'
     ),
-    'title' => array(
-        'title' => __('Title*', 'woocommerce'),
-        'type' => 'text',
-        'description' => __('Descrição que o cliente verá durante o checkout.', 'woocommerce'),
-        'default' => __('vPOS', 'woocommerce'),
-        'desc_tip' => true
-    ),
     'vpos_token' => array(
         'title' => __('Chave de API do vPOS', 'vPOS'),
         'type' => 'text',
@@ -47,18 +40,6 @@ return array(
         'title' => __('Número de Cartão do Supervisor*', 'vPOS'),
         'type' => 'text',
         'description' => __('Número do Cartão do supervisor fornecido pela EMIS', 'woocommerce'),
-        'desc_tip' => true
-    ),
-    'vpos_refund_callback' => array(
-        'title' => __('Refund Callback URL*', 'vPOS'),
-        'type' => 'text',
-        'description' => __('O URL que tratará das notificações de estorno, e.g https://domain.co.ao/api/callback', 'woocommerce'),
-        'desc_tip' => true
-    ),
-    'vpos_payment_callback' => array(
-        'title' => __('Payment Callback URL*', 'vPOS'),
-        'type' => 'text',
-        'description' => __('O URL que tratará das notificações de pagamento, e.g https://domain.co.ao/api/callback', 'woocommerce'),
         'desc_tip' => true
     ),
     'vpos_environment' => array(
