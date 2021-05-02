@@ -159,7 +159,7 @@ class Vpos {
         $request_data["mobile"]       = $mobile;
         $request_data["type"]         = "payment";
         $request_data["pos_id"]       = $this->pos_id;
-        $request_data["callback_url"] = $this->payment_url;
+        //$request_data["callback_url"] = $this->payment_url;
 
         curl_setopt($this->curl, CURLOPT_URL, $this->api_endpoint  . "/transactions");
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);

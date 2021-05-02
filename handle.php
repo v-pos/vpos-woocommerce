@@ -40,8 +40,8 @@ if ($settings == null) {
 
 $token = $settings['vpos_token'];
 $pos_id = $settings['gpo_pos_id'];
-$payment_url = $settings['vpos_payment_callback'];
-$refund_url = $settings['vpos_refund_callback'];
+$payment_url = "https://hard_coded_link"; // change to wordpress host url + page to handle callback eg: https://soba-store.com/vpos-confirmation
+$refund_url = "https://hard_coded_link"; // change to wordpress host url + page to handle callback eg: https://soba-store.com/vpos-confirmation
 $mode = $settings['vpos_environment'];
 
 $handler = new RequestHandler();
