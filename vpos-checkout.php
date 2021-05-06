@@ -630,7 +630,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
           document.getElementById("error-message").innerText = "Pagamento recusado pelo cliente";
           break;
         case 2004:
-          document.getElementById("error-message").innerText = "Esgotou-se o tempo para pagamento";
+          document.getElementById("error-message").innerText = "Tempo limite de pagamento esgotado";
           break;
         case 2003:
           document.getElementById("error-message").innerText = "Limite de rede ou de cartão ultrapassado";
@@ -639,7 +639,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
           document.getElementById("error-message").innerText = "Pagamento recusado pelo emissor de cartão";
           break;
         case 2001:
-          document.getElementById("error-message").innerText = "Saldo insuficiente na conta";
+          document.getElementById("error-message").innerText = "Pagamento recusado por saldo insuficiente na conta";
           break;
         case 2000:
           document.getElementById("error-message").innerText = "Processador de pagamentos não disponível";
