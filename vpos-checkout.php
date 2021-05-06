@@ -778,15 +778,9 @@ if (empty($_COOKIE['vpos_merchant'])) {
       });
     }
 
-    function formatMobileNumber(mobile, every_n_digits, delimiter) {
-        return Array.from(mobile).reduce((accum, curr, index) => {
-          if (index != 0) { 
-            return accum += index % every_n_digits === 0 ? curr + delimiter : curr;
-          } else {
-            every_n_digits += 1;
-            return accum += index % every_n_digits === 0 ? curr + delimiter : curr;
-          }
-        }, '');
+    function formatMobileNumber(mobile) {
+        let formattedMobile = mobile.match(/.{1,3}/g);
+        return formattedMobile.join(' ');
     }
 
     function addMobileNumberToSummaryTable(mobile) {
@@ -799,7 +793,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
         firstTr.appendChild(th);
 
         const mobileTh = document.createElement("th");
-        mobileTh.innerHTML = formatMobileNumber(mobile, 2, " ");
+        mobileTh.innerHTML = formatMobileNumber(mobile);
         mobileTh.classList.add("wg-amount");
         firstTr.appendChild(mobileTh);
         table.appendChild(firstTr);
