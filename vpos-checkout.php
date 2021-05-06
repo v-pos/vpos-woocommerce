@@ -565,7 +565,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
                 </div>
                 <div class="input-container">
                     <img class="icon float" src="https://backoffice.vpos.ao/images/mcx-logo.svg">
-                    <input oninput="checkMobileNumber()" class="float" id="mobile" name="telephone" type="text" value="+244" placeholder="Digite o seu número de telemóvel" maxlength="13" required></span>
+                    <input oninput="checkMobileNumber()" class="float" id="mobile" name="telephone" type="text" placeholder="Digite o seu número de telemóvel" maxlength="9" required></span>
                 </div>
             </div>
 
@@ -580,7 +580,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
                         </tbody>
                     </table>
                     <button type="button" id="submit" class="button">CONFIRMAR</button>
-                    <di class="wg-secure">
+                    <div class="wg-secure">
                         <p>Todos os pagamentos via vPOS são seguros <img src="https://backoffice.vpos.ao/images/mcx-lock.svg"></p> 
                     </div>
                 </div>
@@ -601,7 +601,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
   
     function isValidPhoneNumber(mobile) {
       var phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
-      var number = phoneUtil.parse(mobile);
+      var number = phoneUtil.parse("+244" + mobile);
       return phoneUtil.isValidNumberForRegion(number, "AO");
     }
 
@@ -722,9 +722,8 @@ if (empty($_COOKIE['vpos_merchant'])) {
     }
 
     function sendPaymentRequest(amount, mobile) {
-      var mobile_no_prefix = mobile.replace("+244", "");
       var form = new FormData();
-      form.append('mobile', mobile_no_prefix);
+      form.append('mobile', mobile);
       form.append('amount', parseFloat(amount));
       return axios.post(HANDLER_LOCATION,
        form,
