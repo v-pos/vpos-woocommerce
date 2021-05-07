@@ -374,6 +374,10 @@ p {
   min-height: 0.125rem;
 }
 
+#retry {
+    display: none;
+}
+
 .col-1,
 .col-2,
 .col-3,
@@ -580,6 +584,8 @@ if (empty($_COOKIE['vpos_merchant'])) {
                         </tbody>
                     </table>
                     <button type="button" id="submit" class="button">CONFIRMAR</button>
+                    <button type="button" id="retry" class="button" onclick="reload()">TENTAR NOVAMENTE</button>
+
                     <div class="wg-secure">
                         <p>Todos os pagamentos via vPOS são seguros <img src="https://backoffice.vpos.ao/images/mcx-lock.svg"></p> 
                     </div>
@@ -614,6 +620,10 @@ if (empty($_COOKIE['vpos_merchant'])) {
         document.getElementById("submit").classList.remove("button-active");
         document.getElementById("submit").classList.add("button-disabled");
       }
+    }
+
+    function reload() {
+        location.reload();
     }
 
     function headers() {
@@ -689,10 +699,11 @@ if (empty($_COOKIE['vpos_merchant'])) {
             var stateComponent = document.getElementById("state");
             var state = errorComponent();
             stateComponent.replaceWith(state);
-            document.getElementById("submit").style.display = "initial";
-            document.getElementById("submit").textContent = "TENTAR NOVAMENTE";
+            document.getElementById("submit").style.display = "none";
+            document.getElementById("retry").style.display = "block";
             clearInterval(this.timer);
             showErrorMessage(response.data.status_reason);
+            document.getElementById("retry").classList.add("button-active");
             return;
           }
 
