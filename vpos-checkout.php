@@ -736,7 +736,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
           stateComponent.replaceWith(state);
           document.getElementById("submit").style.display = "none";
 
-          var countDownDate = new Date().getTime() + 100000;
+          var countDownDate = new Date().getTime() + 200000;
           this.timer = setInterval(function() {
             var now = new Date().getTime();
             var distance = 0;
