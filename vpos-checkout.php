@@ -451,6 +451,15 @@ p {
   display: none;
 }
 
+.number-notice {
+    margin-top: 0px;
+    font-size: smaller;
+}
+
+.number-request {
+    margin-bottom: 0px;
+}
+
 @media only screen and (min-width: 33.75em) {  /* 540px */
   .container {
     width: 80%;
@@ -563,10 +572,11 @@ if (empty($_COOKIE['vpos_merchant'])) {
             </div>
 
             <div id='state' class="wg-card">
-                <h5>Digite o número de telemóvel</h5>
-                <div>
-                    
+                <div class="wg-notice">
+                    <h5 class="number-request">Digite o seu número de telemóvel</h5>
+                    <p class="number-notice">O número introduzido deve estar registado no Multicaixa Express</p>
                 </div>
+
                 <div class="input-container">
                     <img class="icon float" src="https://backoffice.vpos.ao/images/mcx-logo.svg">
                     <input oninput="checkMobileNumber()" class="float" id="mobile" name="telephone" type="text" placeholder="Digite o seu número de telemóvel" maxlength="9" required></span>
@@ -585,7 +595,9 @@ if (empty($_COOKIE['vpos_merchant'])) {
                     </table>
                     <button type="button" id="submit" class="button">CONFIRMAR</button>
                     <button type="button" id="retry" class="button" onclick="reload()">TENTAR NOVAMENTE</button>
-
+                    <div class="center">
+                        <p>Powered by <a href="https://vpos.ao" target="_blank">vPOS</a></p>
+                    </div>
                     <div class="wg-secure">
                         <p>Todos os pagamentos via vPOS são seguros <img src="https://backoffice.vpos.ao/images/mcx-lock.svg"></p> 
                     </div>
