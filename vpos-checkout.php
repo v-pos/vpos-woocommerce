@@ -563,7 +563,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
             </div>
 
             <div id='state' class="wg-card">
-                <h5>Digite o número de telemóvel</h5>
+                <h5>Digite o seu número de telemóvel registado no Multicaixa Express</h5>
                 <div>
                     
                 </div>
