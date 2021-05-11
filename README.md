@@ -1,12 +1,12 @@
 # vPOS - WooCommerce
 
-<p align="center"><a href="#/"><img src="https://github.com/nextbss/vpos-woocommerce/blob/main/.wordpress-org/vpos-logo.png" alt="vPOS"></a></p>
+<p align="center"><a href="#"><img src="https://github.com/v-pos/vpos-woocommerce/blob/main/.wordpress-org/vpos-logo.png" alt="vPOS"></a></p>
 
-[![](https://img.shields.io/badge/vPOS-OpenSource-blue.svg)](https://www.nextbss.co.ao)
+[![](https://img.shields.io/badge/vPOS-OpenSource-blue.svg)](https://www.vpos.ao)
 
 The number #1 payment solution in Angola
 
-<p align="center"><a href="#/"><img src="https://github.com/nextbss/vpos-woocommerce/blob/main/.wordpress-org/screenshot-3-0.5x.png" alt="vPOS"></a></p>
+<p align="center"><a href="#"><img src="https://github.com/v-pos/vpos-woocommerce/blob/main/.wordpress-org/screenshot-3-0.5x.png" alt="vPOS"></a></p>
 
 This plugin currently works for the solutions listed below:
 
@@ -14,7 +14,7 @@ This plugin currently works for the solutions listed below:
 
 ## Installation and Configuration
 
-To install and configure visit our wiki: [vPOS Wiki](https://github.com/nextbss/vpos-woocommerce/wiki/Instalação-e-configuração)
+To install and configure visit our wiki: [vPOS Wiki](https://github.com/v-pos/vpos-woocommerce/wiki/Instalação-e-configuração)
 
 ## Have any doubts?
 
@@ -22,11 +22,11 @@ In case of any doubts, bugs, or the like, please leave an issue. We would love t
 
 ## License
 
-Copyright (C) 2021  Next Business Solutions
+Copyright (C) 2021  vPOS
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
+as published by the Free Software Foundation; either version 3
 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
