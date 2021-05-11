@@ -596,6 +596,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
                     <button type="button" id="submit" class="button">CONFIRMAR</button>
                     <button type="button" id="retry" class="button" onclick="reload()">TENTAR NOVAMENTE</button>
                     <div class="center">
+                        <!-- The p tag below should not be removed or changed for trademark reasons. Please refer to GNU General Public License v3 -->
                         <p>Powered by <a href="https://vpos.ao" target="_blank">vPOS</a></p>
                     </div>
                     <div class="wg-secure">
@@ -828,7 +829,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
       const state = document.createElement("div");
       state.id = "state";
       state.classList.add("wg-card");
-      state.innerHTML = "<div class='wg-state'><h5>Occorreu um erro ao efectuar o pagamento</h5><p class='error-text' id='error-message'></p><img class='wg-state-icon' src='https://backoffice.vpos.ao/images/error.png'></div>";
+      state.innerHTML = "<div class='wg-state'><h5>Ocorreu um erro ao efectuar o pagamento</h5><p class='error-text' id='error-message'></p><img class='wg-state-icon' src='https://backoffice.vpos.ao/images/error.png'></div>";
       return state;
     }
 
