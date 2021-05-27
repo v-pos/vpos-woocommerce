@@ -42,11 +42,5 @@ return array(
         'label'       => __('Habilitar modo Sandbox', 'vPOS'),
         'default'     => 'no',
         'description' => "O ambiente que será usado e.g SANDBOX ou PRODUCTION",
-    ),
-    'merchant' => array(
-        'title'       => __('Nome da sua loja', 'vPOS'),
-        'type'        => 'text',
-        'label'       => __('Nome da sua loja', 'vPOS'),
-        'description' => "O nome do comerciante, loja ou estabelecimento",
     )
 );
