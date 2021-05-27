@@ -36,12 +36,6 @@ return array(
         'description' => __('O ID do ponto de venda fornecido pela EMIS', 'vPOS'),
         'desc_tip' => true
     ),
-    'gpo_supervisor_card' => array(
-        'title' => __('Número de Cartão do Supervisor*', 'vPOS'),
-        'type' => 'text',
-        'description' => __('Número do Cartão do supervisor fornecido pela EMIS', 'woocommerce'),
-        'desc_tip' => true
-    ),
     'vpos_environment' => array(
         'title'       => __('Modo Sandbox', 'vPOS'),
         'type'        => 'checkbox',
