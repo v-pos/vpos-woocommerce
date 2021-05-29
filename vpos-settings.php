@@ -36,29 +36,11 @@ return array(
         'description' => __('O ID do ponto de venda fornecido pela EMIS', 'vPOS'),
         'desc_tip' => true
     ),
-    'gpo_supervisor_card' => array(
-        'title' => __('Número de Cartão do Supervisor*', 'vPOS'),
-        'type' => 'text',
-        'description' => __('Número do Cartão do supervisor fornecido pela EMIS', 'woocommerce'),
-        'desc_tip' => true
-    ),
     'vpos_environment' => array(
         'title'       => __('Modo Sandbox', 'vPOS'),
         'type'        => 'checkbox',
         'label'       => __('Habilitar modo Sandbox', 'vPOS'),
         'default'     => 'no',
         'description' => "O ambiente que será usado e.g SANDBOX ou PRODUCTION",
-    ),
-    'merchant' => array(
-        'title'       => __('Nome da sua loja', 'vPOS'),
-        'type'        => 'text',
-        'label'       => __('Nome da sua loja', 'vPOS'),
-        'description' => "O nome do comerciante, loja ou estabelecimento",
-    ),
-    'payment_page_id' => array(
-        'title'       => __('ID da página de pagamento', 'vPOS'),
-        'type'        => 'text',
-        'label'       => __('ID Da página de pagamento ', 'vPOS'),
-        'description' => "ID da página wordpress que será usado para apresentar a tela de pagamento Multicaixa Express do vPOS",
     )
 );
