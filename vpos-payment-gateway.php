@@ -18,6 +18,42 @@
         exit;
     }
 
+    require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
+    require_once(ABSPATH . "wp-admin/includes/class-wp-filesystem-direct.php");
+
+    function move_checkout_file_to_themes_dir() {
+        $checkout_file_path = __DIR__  . "/vpos-checkout.php";
+        $current_themes_path = get_template_directory();
+
+        $filesystem = new WP_Filesystem_Direct(false);
+
+        if ($filesystem->exists($checkout_file_path)) {
+            if($filesystem->copy($checkout_file_path, $current_themes_path . "/vpos-checkout.php", true)) {
+            } else {
+                error_log("failed to copy file from " . $checkout_file_path . " to " . $current_themes_path);
+            }
+        } else {
+            error_log("vpos-checkout.php was not found in plugin directory");
+        }
+    }
+
+    function run_init_commands_after_installation() {
+
+        $slug = (dirname(plugin_basename(__FILE__)));
+        add_option( 'Activated_Plugin', $slug);
+        error_log("Plugin has been activated: " . $slug);
+        move_checkout_file_to_themes_dir();
+    }
+    register_activation_hook(__FILE__, 'run_init_commands_after_installation');
+      
+    function load_plugin() {
+        $slug = (dirname(plugin_basename(__FILE__)));
+          if ( is_admin() && get_option( 'Activated_Plugin' ) == $slug) {
+              delete_option( 'Activated_Plugin' );
+          }
+    }
+    add_action('admin_init', 'load_plugin');
+
     function your_plugin_settings_link($links)
     {
         $settings_link = '<a href="admin.php?page=wc-settings&tab=checkout&section=vpos">Settings</a>';
