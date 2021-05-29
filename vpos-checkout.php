@@ -164,7 +164,7 @@ input:focus ~ .highlight {
 }
 
 .button:hover {
-  box-shadow: 0px 3px 6px rgba(50, 50, 50, 0.2);
+  box-shadow: 0px 3px 6px #FFAA69;
 }
 
 .button-active {
@@ -762,21 +762,21 @@ if (empty($_COOKIE['vpos_merchant'])) {
 
           var countDownDate = new Date().getTime() + 200000;
           this.timer = setInterval(function() {
-            var now = new Date().getTime();
-            var distance = 0;
-            var minutes = 0;
+            var current_time = new Date().getTime();
+            var time_remaining = 0;
             var seconds = 0;
+            var time_remaining_in_seconds = 0;
 
             if (this.state == "rejected" || this.state == "confirmed" || this.state == "expired") {
-              distance = -1;
+              time_remaining = -1;
             } else {
-              distance = countDownDate - now;
-              minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-              seconds = Math.floor((distance % (1000 * 60)) / 1000);
-              document.getElementById("timer").innerHTML = minutes + ":" + seconds;
+              time_remaining = countDownDate - current_time;
+              seconds = Math.floor((time_remaining % (1000 * 60)) / 1000);
+              time_remaining_in_seconds = Math.floor((time_remaining % (1000 * 60 * 60)) / 1000);
+              document.getElementById("timer").innerHTML = time_remaining_in_seconds;
             }
             
-            if (distance < 0) {
+            if (time_remaining < 0) {
               clearInterval(this.timer);
               var stateComponent = document.getElementById("state");
               var state = expiredComponent();
@@ -784,7 +784,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
               this.state = "expired";
             }
 
-            if (distance > 0 && Math.floor(60 % seconds) == 0 && this.state == "processing") {
+            if (time_remaining > 0 && Math.floor(60 % seconds) == 0 && this.state == "processing") {
               poll(response.data);
             }
         }, ONE_SECOND);
