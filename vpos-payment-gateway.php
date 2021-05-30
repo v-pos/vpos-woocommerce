@@ -20,6 +20,15 @@
 
     require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
     require_once(ABSPATH . "wp-admin/includes/class-wp-filesystem-direct.php");
+    require_once("src/vpos_endpoint.php");
+
+    function register_vpos_routes() {
+        error_log("initiationg vpos endpoints");
+        $routes = new VPOS_Routes();
+        $routes->register_routes();
+        error_log("done initiationg vpos endpoints");
+    }
+    add_action("rest_api_init", "register_vpos_routes");
 
     function move_checkout_file_to_themes_dir() {
         $checkout_file_path = __DIR__  . "/vpos-checkout.php";
