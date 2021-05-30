@@ -46,6 +46,31 @@
         }
     }
 
+    function create_transactions_table() {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . "transactions";
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE $table_name (
+            id varchar(255) PRIMARY KEY NOT NULL,
+            state varchar(255) NOT NULL,
+            type varchar(255) NOT NULL,
+            amount varchar(255) NOT NULL,
+            mobile varchar(255) NOT NULL,
+            status_datetime varchar(255),
+            status_reason varchar(255),
+            created_at timestamp,
+            updated_at timestamp,
+
+            INDEX (id)
+          ) $charset_collate;";
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta($sql);
+    }
+    register_activation_hook(__FILE__, 'create_transactions_table');
+
     function run_init_commands_after_installation() {
 
         $slug = (dirname(plugin_basename(__FILE__)));
