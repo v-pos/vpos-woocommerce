@@ -54,10 +54,10 @@
 
         $sql = "CREATE TABLE $table_name (
             id varchar(255) PRIMARY KEY NOT NULL,
-            state varchar(255) NOT NULL,
-            type varchar(255) NOT NULL,
-            amount varchar(255) NOT NULL,
-            mobile varchar(255) NOT NULL,
+            state varchar(255),
+            type varchar(255),
+            amount varchar(255),
+            mobile varchar(255),
             status_datetime varchar(255),
             status_reason varchar(255),
             created_at timestamp,
