@@ -57,7 +57,6 @@ $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url, $mode);
 
 function register_transaction($uuid, $mobile, $amount, $transaction_id) {
     global $wpdb;
-    $uuid = uuid();
 
     $status_reason = null;
     $status = null;
