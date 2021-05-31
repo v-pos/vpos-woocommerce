@@ -16,9 +16,11 @@
 
 require($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/woocommerce/woocommerce.php');
-require("src/vpos.php");
-require("src/request_handler.php");
-require("src/vpos_order_handler.php");
+require_once("src/vpos.php");
+require_once("src/request_handler.php");
+require_once("src/vpos_order_handler.php");
+require_once("src/db/transaction_repository.php");
+require_once("src/db/transaction.php");
 
 if (!defined('ABSPATH')) {
     exit;
@@ -53,25 +55,17 @@ $handler = new RequestHandler();
 $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url, $mode);
 
 
-function register_transaction_in_table($uuid, $mobile, $amount, $transaction_id) {
+function register_transaction($uuid, $mobile, $amount, $transaction_id) {
     global $wpdb;
-	
-	$table_name = $wpdb->prefix . '_vpos_woocommerce_transacations_' . VPOS_VERSION;
-	
-	$wpdb->insert( 
-		$table_name, 
-		array( 
-			'id' => $uuid,
-            'transaction_id' => $transaction_id,
-            'status' => $status,
-            'type' => null,
-			'amount' => $amount,
-            'mobile' => $mobile, 
-            'status_reason' => null,
-            'created_at' => current_time('mysql'),
-            'updated_at' => null
-		)
-	);
+    $uuid = uuid();
+
+    $status_reason = null;
+    $status = null;
+    $type = null;
+
+    $transaction = new Transaction($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type);
+	$transacion_repository = new TransactionRepository($wpdb);
+    $transacion_repository->insert_transaction($transaction);
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -81,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $response_data = $handler->handleNewPayment($vpos, $mobile, $amount);
     $transaction_id = $response_data["location"];
 
-    register_transaction_in_table($uuid, $mobile, $amount, $transaction_id);
+    register_transaction($uuid, $mobile, $amount, $transaction_id);
     header('Content-Type: application/json');
     http_response_code($response_data["code"]);
     echo $transaction_id;
