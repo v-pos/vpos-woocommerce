@@ -38,20 +38,53 @@ if ($settings == null) {
     exit(1);
 }
 
+$uuid = uuid();
+$payment_callback_url = get_rest_url(null, "vpos-woocommerce/v1/cart/vpos/" . $uuid . "/confirmation");
+
+error_log("Callback URL: " . $payment_callback_url);
+
 $token = $settings['vpos_token'];
 $pos_id = $settings['gpo_pos_id'];
-$payment_url = "https://hard_coded_link"; // change to wordpress host url + page to handle callback eg: https://soba-store.com/vpos-confirmation
+$payment_url = $payment_callback_url; // change to wordpress host url + page to handle callback eg: https://soba-store.com/vpos-confirmation
 $refund_url = "https://hard_coded_link"; // change to wordpress host url + page to handle callback eg: https://soba-store.com/vpos-confirmation
 $mode = $settings['vpos_environment'];
 
 $handler = new RequestHandler();
 $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url, $mode);
 
+
+function register_transaction_in_table($uuid, $mobile, $amount, $transaction_id) {
+    global $wpdb;
+	
+	$table_name = $wpdb->prefix . '_vpos_woocommerce_transacations_' . VPOS_VERSION;
+	
+	$wpdb->insert( 
+		$table_name, 
+		array( 
+			'id' => $uuid,
+            'transaction_id' => $transaction_id,
+            'status' => $status,
+            'type' => null,
+			'amount' => $amount,
+            'mobile' => $mobile, 
+            'status_reason' => null,
+            'created_at' => current_time('mysql'),
+            'updated_at' => null
+		)
+	);
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mobile = $_POST['mobile'];
     $amount = $_POST['amount'];
 
-    $handler->handlePayment($vpos, $mobile, $amount);
+    $response_data = $handler->handleNewPayment($vpos, $mobile, $amount);
+    $transaction_id = $response_data["location"];
+
+    register_transaction_in_table($uuid, $mobile, $amount, $transaction_id);
+    header('Content-Type: application/json');
+    http_response_code($response_data["code"]);
+    echo $transaction_id;
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
