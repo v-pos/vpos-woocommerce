@@ -57,26 +57,8 @@
 
     function create_transactions_table() {
         global $wpdb;
-
-        $table_name = $wpdb->prefix . "_vpos_woocommerce_transacations_" . VPOS_VERSION;
-        $charset_collate = $wpdb->get_charset_collate();
-
-        $sql = "CREATE TABLE $table_name (
-            id varchar(255) PRIMARY KEY NOT NULL,
-            transaction_id varchar(255),
-            status varchar(255),
-            type varchar(255),
-            amount varchar(255),
-            mobile varchar(255),
-            status_reason varchar(255),
-            created_at timestamp,
-            updated_at timestamp,
-
-            INDEX (id)
-          ) $charset_collate;";
-
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-        dbDelta($sql);
+        $transaction_repository = new TransactionRepository($wpdb);
+        $transaction_repository->create_transactions_table();
     }
 
     function run_init_commands_after_installation() {
