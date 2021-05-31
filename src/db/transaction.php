@@ -18,12 +18,12 @@ class Transaction {
         $this->type = $type;
     }
 
-    public function get_transaction_id() {
-        return $this->transaction_id;
-    }
-
     public function get_uuid() {
         return $this->uuid;
+    }
+
+    public function get_transaction_id() {
+        return $this->transaction_id;
     }
 
     public function get_amount() {
