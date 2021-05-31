@@ -39,6 +39,11 @@ class RequestHandler {
         }
     }
 
+    public function handleNewPayment($vpos, $mobile, $amount) {
+        $response_data = $vpos->newPayment($mobile, $amount);
+        return $response_data;
+    }
+
     public function handlePollResource($vpos, $id) {
         $response_data = $vpos->pollResource($id);
 
