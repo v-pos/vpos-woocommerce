@@ -753,6 +753,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
        form,
       headers)
       .then(response => {
+          window.location.href = <?php echo get_rest_url(null, "vpos-woocommerce/v1/cart/vpos/" . $response.data); ?>;
           this.state = "processing";
           addMobileNumberToSummaryTable(mobile);
           var stateComponent = document.getElementById("state");
