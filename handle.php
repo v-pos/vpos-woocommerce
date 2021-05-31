@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     register_transaction($uuid, $mobile, $amount, $transaction_id);
     header('Content-Type: application/json');
     http_response_code($response_data["code"]);
-    echo $transaction_id;
+    echo $uuid;
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
