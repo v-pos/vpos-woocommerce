@@ -18,6 +18,15 @@
         exit;
     }
 
+    // This value is post fixed to all table names created in this plugin.
+    // Example: `wp_transactions_1_0`
+    // When updating or changing database schema please update this field by_incrementing the version number.
+    // Example: Defining the `VPOS_VERSION` constant to `1_1` will produce the following: 
+    // `wp_transactions_1_1`
+    // This makes it easier to deal with changes in the database table that might occur
+    // during plugin updates.
+    define("VPOS_VERSION", "1_0");
+
     require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
     require_once(ABSPATH . "wp-admin/includes/class-wp-filesystem-direct.php");
     require_once("src/vpos_endpoint.php");
@@ -49,16 +58,16 @@
     function create_transactions_table() {
         global $wpdb;
 
-        $table_name = $wpdb->prefix . "transactions";
+        $table_name = $wpdb->prefix . "_vpos_woocommerce_transacations_" . VPOS_VERSION;
         $charset_collate = $wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE $table_name (
             id varchar(255) PRIMARY KEY NOT NULL,
-            state varchar(255),
+            transaction_id varchar(255),
+            status varchar(255),
             type varchar(255),
             amount varchar(255),
             mobile varchar(255),
-            status_datetime varchar(255),
             status_reason varchar(255),
             created_at timestamp,
             updated_at timestamp,
@@ -69,7 +78,6 @@
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta($sql);
     }
-    register_activation_hook(__FILE__, 'create_transactions_table');
 
     function run_init_commands_after_installation() {
 
@@ -77,6 +85,7 @@
         add_option( 'Activated_Plugin', $slug);
         error_log("Plugin has been activated: " . $slug);
         move_checkout_file_to_themes_dir();
+        create_transactions_table();
     }
     register_activation_hook(__FILE__, 'run_init_commands_after_installation');
       
