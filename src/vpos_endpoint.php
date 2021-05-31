@@ -42,7 +42,7 @@ class VPOS_Routes extends WP_REST_Controller {
     $result = $transaction_repository->get_transaction($uuid);
 
     if (count($result) == 0) {
-      return new WP_REST_Response("", 400);
+      return new WP_REST_Response(null, 400);
     } 
 
     $transaction = $result[0];
@@ -50,7 +50,15 @@ class VPOS_Routes extends WP_REST_Controller {
     return new WP_REST_Response(null, 201);
   }
 
-  public static function extract_uuid_from_route($route) {
+  /**
+   *  Helper function to extract the uuid from the route.
+   * 
+   *  Example:
+   *  php > $route = "/vpos-woocommerce/v1/cart/vpos/fc4d77b0-a4c2-4417-b537-a62f7c88dd06/confirmation";
+   *  php > echo extract_uuid_from_route($route);
+   *  php > fc4d77b0-a4c2-4417-b537-a62f7c88dd06
+   */
+  private function extract_uuid_from_route($route) {
     $modified_route = substr($route, 31);
     return str_replace("/confirmation", "", $modified_route);
   }
