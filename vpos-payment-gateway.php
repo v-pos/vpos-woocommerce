@@ -65,6 +65,48 @@
         }
     }
 
+    function add_checkout_page() {
+        $page_title = 'vpos-checkout';
+        $checkout_page = get_page_by_title($page_title, 'OBJECT', 'page');
+
+        if(empty($checkout_page)) {
+            wp_insert_post(
+                array(
+                'comment_status' => 'close',
+                'post_author'    => 1,
+                'post_title'     => ucwords($page_title),
+                'post_name'      => strtolower(str_replace(' ', '-', trim($page_title))),
+                'post_status'    => 'publish',
+                'post_content'   => '',
+                'post_type'      => 'page',
+                'page_template'  => 'vpos-checkout.php'
+                )
+            );
+            error_log("Created vPOS checkout page");
+        }
+    }
+
+    function add_poll_page() {
+        $page_title = 'cart-vpos-poll';
+        $checkout_page = get_page_by_title($page_title, 'OBJECT', 'page');
+        
+        if(empty($checkout_page)) {
+            wp_insert_post(
+                array(
+                'comment_status' => 'close',
+                'post_author'    => 1,
+                'post_title'     => ucwords($page_title),
+                'post_name'      => strtolower(str_replace(' ', '-', trim($page_title))),
+                'post_status'    => 'publish',
+                'post_content'   => '',
+                'post_type'      => 'page',
+                'page_template'  => 'vpos-poll.php'
+                )
+            );
+            error_log("Created polling page");
+        }
+    }
+
     function create_transactions_table() {
         global $wpdb;
         $transaction_repository = new TransactionRepository($wpdb);
@@ -72,11 +114,12 @@
     }
 
     function run_init_commands_after_installation() {
-
         $slug = (dirname(plugin_basename(__FILE__)));
         add_option( 'Activated_Plugin', $slug);
         error_log("Plugin has been activated: " . $slug);
         move_checkout_file_to_themes_dir();
+        add_checkout_page();
+        add_poll_page();
         create_transactions_table();
     }
     register_activation_hook(__FILE__, 'run_init_commands_after_installation');
