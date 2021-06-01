@@ -41,7 +41,7 @@ if ($settings == null) {
 }
 
 $uuid = uuid();
-$payment_callback_url = get_rest_url(null, "vpos-woocommerce/v1/cart/vpos/" . $uuid . "/confirmation");
+$payment_callback_url = get_rest_url(null, "vpos-woocommerce/v1/cart/" . $uuid . "/confirmation");
 
 error_log("Callback URL: " . $payment_callback_url);
 
