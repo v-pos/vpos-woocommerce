@@ -107,6 +107,16 @@
         }
     }
 
+    function hide_vpos_pages_from_website($args) {
+        $vpos_checkout_page = get_page_by_title('vpos-checkout', 'OBJECT', 'page');
+        $vpos_poll_page = get_page_by_title('cart-vpos-poll', 'OBJECT', 'page');
+
+        $args['exclude'] = '';
+        $args['exclude'] .= "" . $vpos_poll_page->ID . "," . "" . $vpos_checkout_page->ID . ",";
+        return $args;
+    }
+    add_filter('wp_page_menu_args', 'hide_vpos_pages_from_website', 999, 1);
+
     function create_transactions_table() {
         global $wpdb;
         $transaction_repository = new TransactionRepository($wpdb);
