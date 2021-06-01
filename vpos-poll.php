@@ -540,8 +540,8 @@ p {
 date_default_timezone_set("Africa/Luanda");
 
 if (empty($_COOKIE['vpos_merchant'])) {
-  
-} 
+    echo("<script>location.href = '". site_url() ."'</script>");
+  } 
 ?>
 
 <?php 
