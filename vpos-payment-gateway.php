@@ -41,6 +41,7 @@
 
     function move_checkout_file_to_themes_dir() {
         $checkout_file_path = __DIR__  . "/vpos-checkout.php";
+        $poll_file_path = __DIR__  . "/vpos-poll.php";
         $current_themes_path = get_template_directory();
 
         $filesystem = new WP_Filesystem_Direct(false);
@@ -52,6 +53,15 @@
             }
         } else {
             error_log("vpos-checkout.php was not found in plugin directory");
+        }
+
+        if ($filesystem->exists($poll_file_path)) {
+            if($filesystem->copy($poll_file_path, $current_themes_path . "/vpos-poll.php", true)) {
+            } else {
+                error_log("failed to copy file from " . $poll_file_path . " to " . $current_themes_path);
+            }
+        } else {
+            error_log("vpos-poll.php was not found in plugin directory");
         }
     }
 
