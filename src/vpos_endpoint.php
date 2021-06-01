@@ -9,16 +9,17 @@ class VPOS_Routes extends WP_REST_Controller
     {
         error_log("invoked register_routes!!");
         $namespace = "vpos-woocommerce/v1";
-        $base = "cart/vpos";
+        $base = "cart";
 
-        // Endpoint -> http://your-site.com/wp-json/vpos-woocommerce/v1/cart/vpos/fc4d77b0-a4c2-4417-b537-a62f7c88dd06/confirmation
+        // Endpoint -> http://your-site.com/wp-json/vpos-woocommerce/v1/cart/fc4d77b0-a4c2-4417-b537-a62f7c88dd06/confirmation
         register_rest_route($namespace, $base . "/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/confirmation", array(
             array(
                 "methods" => "POST",
                 "callback" => array(
                     $this,
                     'handle_payment_confirmation'
-                )
+                ),
+                'permission_callback' => '__return_true'
             )
         ));
         register_rest_route($namespace, $base . "/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}", array(
@@ -27,7 +28,8 @@ class VPOS_Routes extends WP_REST_Controller
                 "callback" => array(
                     $this,
                     'get_transaction_status'
-                )
+                ),
+                'permission_callback' => '__return_true'
             )
         ));
     }
@@ -36,6 +38,7 @@ class VPOS_Routes extends WP_REST_Controller
     {
         $route = $request->get_route();
         $uuid = $this->extract_uuid_from_route($route);
+        error_log($uuid);
 
         global $wpdb;
         $transaction_repository = new TransactionRepository($wpdb);
@@ -83,6 +86,7 @@ class VPOS_Routes extends WP_REST_Controller
 
         $transaction = $result[0];
         $update_transaction_result = $transaction_repository->update_transaction($uuid, $body);
+        error_log("transaction has been updated!");
         return new WP_REST_Response(null, 201);
     }
 
@@ -90,13 +94,13 @@ class VPOS_Routes extends WP_REST_Controller
      *  Helper function to extract the uuid from the route.
      *
      *  Example:
-     *  php > $route = "/vpos-woocommerce/v1/cart/vpos/fc4d77b0-a4c2-4417-b537-a62f7c88dd06/confirmation";
+     *  php > $route = "/vpos-woocommerce/v1/cart/fc4d77b0-a4c2-4417-b537-a62f7c88dd06/confirmation";
      *  php > echo extract_uuid_from_route($route);
      *  php > fc4d77b0-a4c2-4417-b537-a62f7c88dd06
      */
     private function extract_uuid_from_route($route)
     {
-        $modified_route = substr($route, 31);
+        $modified_route = substr($route, 26);
         return str_replace("/confirmation", "", $modified_route);
     }
 }
