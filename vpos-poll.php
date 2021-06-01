@@ -795,6 +795,8 @@ if (empty($_COOKIE['vpos_merchant'])) {
     }
 
     function init() {
+        console.log('%cThis site uses vPOS to enable payments. Register and start your journey with us. %chttps://vpos.ao', 'font-weight:bold', 'color: red');
+
         this.state = "processing";
           addMobileNumberToSummaryTable("994763642");
           const queryString = window.location.search;

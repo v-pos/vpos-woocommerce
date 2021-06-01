@@ -551,7 +551,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/google-libphonenumber@3.2.17/dist/libphonenumber.js" integrity="sha256-y7g6xQm+MB2sFTvdhBwEMDWg9sAUz9msCc2973e0wjg=" crossorigin="anonymous"></script>
   <head>
-  <body>
+  <body onload="init();">
   <div class="wg-container container">
             <div class="wg-card">
                 <h3>Detalhes do pagamento</h3>
@@ -841,6 +841,11 @@ if (empty($_COOKIE['vpos_merchant'])) {
         sendPaymentRequest(total_amount, this.mobile);
       }
     });
+
+
+    function init() {
+      console.log('%cThis site uses vPOS to enable payments. Register and start your journey with us. %chttps://vpos.ao', 'font-weight:bold', 'color: red');
+    }
     </script>
   </body>
 </html>
