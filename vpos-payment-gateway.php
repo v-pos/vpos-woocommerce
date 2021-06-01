@@ -4,7 +4,7 @@
  * Plugin Name:       vPOS - Payment Gateway
  * Plugin URI:        https://github.com/v-pos/vpos-woocommerce
  * Description:       Uma melhor forma de aceitar pagamentos.
- * Version:           1.0
+ * Version:           1.1
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            vPOS
@@ -25,7 +25,7 @@
     // `wp_transactions_1_1`
     // This makes it easier to deal with changes in the database table that might occur
     // during plugin updates.
-    define("VPOS_VERSION", "1_0");
+    define("VPOS_VERSION", "1_1");
 
     require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
     require_once(ABSPATH . "wp-admin/includes/class-wp-filesystem-direct.php");
