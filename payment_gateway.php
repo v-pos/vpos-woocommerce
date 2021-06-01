@@ -57,7 +57,7 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         storeInfoInCookies($this->merchant, $this->get_order_total(), $orderId);
         return array(
             'result'   => 'success',
-            'redirect' => site_url() . "/cart/" . $this->page_id
+            'redirect' => site_url() . "/" . $this->page_id
         );
     }
 }
