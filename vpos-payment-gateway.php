@@ -32,10 +32,8 @@
     require_once("src/vpos_endpoint.php");
 
     function register_vpos_routes() {
-        error_log("initiationg vpos endpoints");
         $routes = new VPOS_Routes();
         $routes->register_routes();
-        error_log("done initiationg vpos endpoints");
     }
     add_action("rest_api_init", "register_vpos_routes");
 
@@ -82,7 +80,6 @@
                 'page_template'  => 'vpos-checkout.php'
                 )
             );
-            error_log("Created vPOS checkout page");
         }
     }
 
@@ -103,7 +100,6 @@
                 'page_template'  => 'vpos-poll.php'
                 )
             );
-            error_log("Created polling page");
         }
     }
 
@@ -126,7 +122,6 @@
     function run_init_commands_after_installation() {
         $slug = (dirname(plugin_basename(__FILE__)));
         add_option( 'Activated_Plugin', $slug);
-        error_log("Plugin has been activated: " . $slug);
         move_checkout_file_to_themes_dir();
         add_checkout_page();
         add_poll_page();
