@@ -616,7 +616,8 @@ if (empty($_COOKIE['vpos_merchant'])) {
     var state = "initial";
     var timer = null;
     var numberIsAdded = false;
-    const HANDLER_LOCATION = "<?php echo home_url().'/wp-content/plugins/vpos-woocommerce/handle.php'; ?>";
+    const HANDLER_LOCATION = "<?php echo home_url() . '/wp-content/plugins/vpos-woocommerce/handle.php'; ?>";
+    const poll_url = "<?php echo home_url(). '/cart-vpos-poll'; ?>";
   
     function isValidPhoneNumber(mobile) {
       var phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
@@ -753,42 +754,9 @@ if (empty($_COOKIE['vpos_merchant'])) {
        form,
       headers)
       .then(response => {
-          window.location.href = <?php echo get_rest_url(null, "vpos-woocommerce/v1/cart/vpos/" . $response.data); ?>;
-          this.state = "processing";
-          addMobileNumberToSummaryTable(mobile);
-          var stateComponent = document.getElementById("state");
-          var state = confirmationComponent();
-          stateComponent.replaceWith(state);
-          document.getElementById("submit").style.display = "none";
-
-          var countDownDate = new Date().getTime() + 200000;
-          this.timer = setInterval(function() {
-            var current_time = new Date().getTime();
-            var time_remaining = 0;
-            var seconds = 0;
-            var time_remaining_in_seconds = 0;
-
-            if (this.state == "rejected" || this.state == "confirmed" || this.state == "expired") {
-              time_remaining = -1;
-            } else {
-              time_remaining = countDownDate - current_time;
-              seconds = Math.floor((time_remaining % (1000 * 60)) / 1000);
-              time_remaining_in_seconds = Math.floor((time_remaining % (1000 * 60 * 60)) / 1000);
-              document.getElementById("timer").innerHTML = time_remaining_in_seconds;
-            }
-            
-            if (time_remaining < 0) {
-              clearInterval(this.timer);
-              var stateComponent = document.getElementById("state");
-              var state = expiredComponent();
-              stateComponent.replaceWith(state);
-              this.state = "expired";
-            }
-
-            if (time_remaining > 0 && Math.floor(60 % seconds) == 0 && this.state == "processing") {
-              poll(response.data);
-            }
-        }, ONE_SECOND);
+          var transaction_id = response.data;
+          var redirect_url = "<?php echo get_rest_url(null, "vpos-woocommerce/v1/cart/vpos/"); ?>" + transaction_id;
+          window.location.href = poll_url + "?transaction_id=" + transaction_id;
         return response;
       }).catch(error => {
         if (this.state == "initial") {
