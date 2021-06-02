@@ -579,7 +579,14 @@ if (empty($_COOKIE['vpos_merchant'])) {
 
                 <div class="input-container">
                     <img class="icon float" src="https://backoffice.vpos.ao/images/mcx-logo.svg">
-                    <input oninput="checkMobileNumber()" class="float" id="mobile" name="telephone" type="text" placeholder="Digite o seu número de telemóvel" maxlength="9" required></span>
+                    <?php 
+                        if (empty($_COOKIE['vpos_order_billing_telephone'])) {
+                          echo("<input oninput='checkMobileNumber()' class='float' id='mobile' name='telephone' type='text' placeholder='Digite o seu número de telemóvel' maxlength='9' required></span>");
+                        } else {
+                          echo("<input oninput='checkMobileNumber()' value='" . $_COOKIE['vpos_order_billing_telephone'] . "' class='float' id='mobile' name='telephone' type='text' placeholder='Digite o seu número de telemóvel' maxlength='9' required></span>");
+                        }
+                    ?> 
+                    
                 </div>
             </div>
 
@@ -844,6 +851,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
 
 
     function init() {
+      checkMobileNumber();
       console.log('%cThis site uses vPOS to enable payments. Register and start your journey with us. %chttps://vpos.ao', 'font-weight:bold', 'color: red');
     }
     </script>
