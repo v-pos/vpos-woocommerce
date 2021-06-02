@@ -49,7 +49,7 @@ class VPOS_Routes extends WP_REST_Controller
         if (count($result) == 0)
         {
             $message = json_encode(array(
-                "error" => "not found"
+                "error" => "transaction not found"
             ));
             return new WP_REST_Response($message, 404);
         }
@@ -82,7 +82,10 @@ class VPOS_Routes extends WP_REST_Controller
 
         if (count($result) == 0)
         {
-            return new WP_REST_Response(null, 400);
+            $message = json_encode(array(
+                "error" => "transaction not found"
+            ));
+            return new WP_REST_Response($message, 404);
         }
 
         $transaction = $result[0];
