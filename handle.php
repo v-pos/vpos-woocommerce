@@ -43,8 +43,6 @@ if ($settings == null) {
 $uuid = uuid();
 $payment_callback_url = get_rest_url(null, "vpos-woocommerce/v1/cart/" . $uuid . "/confirmation");
 
-error_log("Callback URL: " . $payment_callback_url);
-
 $token = $settings['vpos_token'];
 $pos_id = $settings['gpo_pos_id'];
 $payment_url = $payment_callback_url; // change to wordpress host url + page to handle callback eg: https://soba-store.com/vpos-confirmation
@@ -72,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $amount = $_POST['amount'];
 
     addPhoneToCookies($mobile);
-    
+
     $response_data = $handler->handleNewPayment($vpos, $mobile, $amount);
     $transaction_id = $response_data["location"];
 

@@ -8,7 +8,6 @@ class VPOS_Routes extends WP_REST_Controller
 
     public function register_routes()
     {
-        error_log("invoked register_routes!!");
         $namespace = "vpos-woocommerce/v1";
         $base = "cart";
 
@@ -39,7 +38,6 @@ class VPOS_Routes extends WP_REST_Controller
     {
         $route = $request->get_route();
         $uuid = $this->extract_uuid_from_route($route);
-        error_log($uuid);
 
         global $wpdb;
         $transaction_repository = new TransactionRepository($wpdb);
@@ -90,7 +88,6 @@ class VPOS_Routes extends WP_REST_Controller
 
         $transaction = $result[0];
         $update_transaction_result = $transaction_repository->update_transaction($uuid, $body);
-        error_log("transaction has been updated!");
         return new WP_REST_Response(null, 201);
     }
 

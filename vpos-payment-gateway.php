@@ -19,7 +19,6 @@
     }
 
     define("VPOS_DIR", plugin_dir_path(__FILE__));
-    error_log(VPOS_DIR);
 
     // This value is post fixed to all table names created in this plugin.
     // Example: `wp_transactions_1_0`
