@@ -792,47 +792,49 @@ if (empty($_COOKIE['vpos_merchant'])) {
     }
 
     function init() {
-        console.log('%cThis site uses vPOS to enable payments. Register and start your journey with us. %chttps://vpos.ao', 'font-weight:bold', 'color: red');
+      console.log('%cThis site uses vPOS to enable payments. Register and start your journey with us. %chttps://vpos.ao', 'font-weight:bold', 'color: red');
+      this.state = "processing";
+      
+      const mobile = "<?php echo($_COOKIE['vpos_order_billing_telephone']); ?>";
+      addMobileNumberToSummaryTable(mobile);
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const transaction_id = urlParams.get('id');
 
-        this.state = "processing";
-          addMobileNumberToSummaryTable("994763642");
-          const queryString = window.location.search;
-          const urlParams = new URLSearchParams(queryString);
-          const transaction_id = urlParams.get('id');
+      var stateComponent = document.getElementById("state");
+      var state = confirmationComponent();
+      stateComponent.replaceWith(state);
+      document.getElementById("submit").style.display = "none";
 
-          var stateComponent = document.getElementById("state");
-          var state = confirmationComponent();
-          stateComponent.replaceWith(state);
-          document.getElementById("submit").style.display = "none";
+      var countDownDate = new Date().getTime() + 200000;
 
-          var countDownDate = new Date().getTime() + 200000;
-          this.timer = setInterval(function() {
-            var current_time = new Date().getTime();
-            var time_remaining = 0;
-            var seconds = 0;
-            var time_remaining_in_seconds = 0;
+      this.timer = setInterval(function() {
+        var current_time = new Date().getTime();
+        var time_remaining = 0;
+        var seconds = 0;
+        var time_remaining_in_seconds = 0;
 
-            if (this.state == "rejected" || this.state == "confirmed" || this.state == "expired") {
-              time_remaining = -1;
-            } else {
-              time_remaining = countDownDate - current_time;
-              seconds = Math.floor((time_remaining % (1000 * 60)) / 1000);
-              time_remaining_in_seconds = Math.floor((time_remaining % (1000 * 60 * 60)) / 1000);
-              document.getElementById("timer").innerHTML = time_remaining_in_seconds;
-            }
-            
-            if (time_remaining < 0) {
-              clearInterval(this.timer);
-              var stateComponent = document.getElementById("state");
-              var state = expiredComponent();
-              stateComponent.replaceWith(state);
-              this.state = "expired";
-            }
+        if (this.state == "rejected" || this.state == "confirmed" || this.state == "expired") {
+            time_remaining = -1;
+        } else {
+            time_remaining = countDownDate - current_time;
+            seconds = Math.floor((time_remaining % (1000 * 60)) / 1000);
+            time_remaining_in_seconds = Math.floor((time_remaining % (1000 * 60 * 60)) / 1000);
+            document.getElementById("timer").innerHTML = time_remaining_in_seconds;
+        }
+                
+        if (time_remaining < 0) {
+            clearInterval(this.timer);
+            var stateComponent = document.getElementById("state");
+            var state = expiredComponent();
+            stateComponent.replaceWith(state);
+            this.state = "expired";
+        }
 
-            if (time_remaining > 0 && Math.floor(60 % seconds) == 0 && this.state == "processing") {
-              poll(transaction_id);
-            }
-        }, EVERY_SECOND);
+        if (time_remaining > 0 && Math.floor(60 % seconds) == 0 && this.state == "processing") {
+            poll(transaction_id);
+        }
+      }, EVERY_SECOND);
     }
 
     </script>
