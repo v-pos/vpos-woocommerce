@@ -18,6 +18,9 @@
         exit;
     }
 
+    define("VPOS_DIR", plugin_dir_path(__FILE__));
+    error_log(VPOS_DIR);
+
     // This value is post fixed to all table names created in this plugin.
     // Example: `wp_transactions_1_0`
     // When updating or changing database schema please update this field by_incrementing the version number.
@@ -29,7 +32,7 @@
 
     require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
     require_once(ABSPATH . "wp-admin/includes/class-wp-filesystem-direct.php");
-    require_once("src/vpos_endpoint.php");
+    require_once("src/controllers/vpos_endpoint.php");
 
     function register_vpos_routes() {
         $routes = new VPOS_Routes();
