@@ -17,7 +17,7 @@
 require($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/woocommerce/woocommerce.php');
 require_once("src/http/vpos.php");
-require_once("src/request_handler.php");
+require_once("src/http/request_handler.php");
 require_once("src/vpos_order_handler.php");
 require_once("src/db/repositories/transaction_repository.php");
 require_once("src/db/entities/transaction.php");
