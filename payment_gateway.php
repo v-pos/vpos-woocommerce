@@ -24,7 +24,7 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
     private $pos_id;
     private $mode;
     private $merchant;
-    private $orderId;
+    private $order_id;
     private $page_id;
 
     public function __construct()
@@ -51,13 +51,37 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         $this->form_fields = include("vpos-settings.php");
     }
 
-    public function process_payment($orderId)
+    public function process_payment($order_id)
     {
-        $this->orderId = $orderId;
-        storeInfoInCookies($this->merchant, $this->get_order_total(), $orderId);
+        $this->order_id = $order_id;
+        $billing_phone_number = $this->get_customer_billing_number($order_id);
+        $billing_phone_number = $this->strip_prefix_from_angolan_number($billing_phone_number);
+
+        if ($this->is_valid_angolan_number($billing_phone_number)) {
+            storeInfoInCookies($this->merchant, $this->get_order_total(), $this->order_id, $billing_phone_number);
+        } else {
+            storeInfoInCookies($this->merchant, $this->get_order_total(), $this->order_id, "");
+        }
+
         return array(
             'result'   => 'success',
             'redirect' => site_url() . "/" . $this->page_id
         );
+    }
+
+    private function is_valid_angolan_number($mobile) {
+        return strlen($mobile) == 9;
+    }
+
+    private function strip_prefix_from_angolan_number($mobile) {
+        $mobile = trim($mobile);
+        $mobile = str_replace("+244", "", $mobile);
+        $mobile = str_replace("00244", "", $mobile);
+        return $mobile;
+    }
+
+    private function get_customer_billing_number($order_id) {
+        $order = new WC_Order($this->order_id);
+        return $order->get_billing_phone();
     }
 }

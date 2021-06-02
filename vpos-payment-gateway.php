@@ -196,11 +196,12 @@
             return $available_gateways;
         }
 
-        function storeInfoInCookies($merchant, $total_amount, $order_id)
+        function storeInfoInCookies($merchant, $total_amount, $order_id, $order_billing_telephone)
         {
             setcookie("vpos_merchant", $merchant, time() + 3600, "/");
             setcookie("vpos_total_amount", $total_amount, time() + 3600, "/");
             setcookie("vpos_order_id", $order_id, time() + 3600, "/");
+            setcookie("vpos_order_billing_telephone", $order_billing_telephone, time() + 3600, "/");
         }
 
         function formatTotalAmount($total_amount)
