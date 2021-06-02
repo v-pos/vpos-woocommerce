@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - create db for local transactions
 - automatically create polling and checkout page
+- automatically insert mobile number to checkout page to improve user experience
  
 ### Changed
 - implement mechanism to update payment via callback instead of polling
