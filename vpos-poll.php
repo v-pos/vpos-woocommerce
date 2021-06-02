@@ -801,7 +801,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
           addMobileNumberToSummaryTable("994763642");
           const queryString = window.location.search;
           const urlParams = new URLSearchParams(queryString);
-          const transaction_id = urlParams.get('transaction_id');
+          const transaction_id = urlParams.get('id');
 
           var stateComponent = document.getElementById("state");
           var state = confirmationComponent();

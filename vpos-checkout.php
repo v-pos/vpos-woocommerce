@@ -756,7 +756,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
       .then(response => {
           var transaction_id = response.data;
           var redirect_url = "<?php echo get_rest_url(null, "vpos-woocommerce/v1/cart/vpos/"); ?>" + transaction_id;
-          window.location.href = poll_url + "?transaction_id=" + transaction_id;
+          window.location.href = poll_url + "?id=" + transaction_id;
         return response;
       }).catch(error => {
         if (this.state == "initial") {
