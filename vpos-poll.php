@@ -545,7 +545,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
 ?>
 
 <?php 
-    if (empty($_GET['transaction_id'])) {
+    if (empty($_GET['id'])) {
         echo("<script>location.href = '". site_url() ."'</script>");
     }
 ?>
@@ -719,11 +719,8 @@ if (empty($_COOKIE['vpos_merchant'])) {
             var stateComponent = document.getElementById("state");
             var state = errorComponent();
             stateComponent.replaceWith(state);
-            document.getElementById("submit").style.display = "none";
-            document.getElementById("retry").style.display = "block";
             clearInterval(this.timer);
             showErrorMessage(response.data.status_reason);
-            document.getElementById("retry").classList.add("button-active");
             return;
           }
         } 
