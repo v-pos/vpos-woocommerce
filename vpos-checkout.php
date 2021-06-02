@@ -761,8 +761,8 @@ if (empty($_COOKIE['vpos_merchant'])) {
        form,
       headers)
       .then(response => {
-          var transaction_id = response.data;
-          var redirect_url = "<?php echo get_rest_url(null, "vpos-woocommerce/v1/cart/vpos/"); ?>" + transaction_id;
+          const transaction_id = response.data;
+          const redirect_url = "<?php echo get_rest_url(null, "vpos-woocommerce/v1/cart/vpos/"); ?>" + transaction_id;
           window.location.href = poll_url + "?id=" + transaction_id;
         return response;
       }).catch(error => {
@@ -843,7 +843,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
         this.mobile = document.getElementById("mobile").value;
       } 
 
-      var total_amount = <?php echo $_COOKIE['vpos_total_amount']; ?>;
+      const total_amount = <?php echo $_COOKIE['vpos_total_amount']; ?>;
       if (isValidPhoneNumber(this.mobile)) {
         sendPaymentRequest(total_amount, this.mobile);
       }
