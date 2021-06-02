@@ -18,7 +18,7 @@ class VPOS_Routes extends WP_REST_Controller
                 "methods" => "POST",
                 "callback" => array(
                     $this,
-                    'handle_payment_confirmation'
+                    'handle_confirmation'
                 ),
                 'permission_callback' => '__return_true'
             )
@@ -59,9 +59,9 @@ class VPOS_Routes extends WP_REST_Controller
     }
 
     /**
-     * Handle Payment Confirmation
+     * Handle Confirmation Webhook
      *
-     * This function is responsable for handling payment confirmation from vPOS.
+     * This function is responsable for handling payment and refund confirmation from vPOS.
      *
      * If transaction exists locally and payment has been accepted, update local transaction
      * and return 200 or 201 to indicate succesfull confirmation of payment.
@@ -69,7 +69,7 @@ class VPOS_Routes extends WP_REST_Controller
      * @param WP_REST_Request $request Full data about the request.
      * @return WP_Error|WP_REST_Response
      */
-    public function handle_payment_confirmation($request)
+    public function handle_confirmation($request)
     {
         $body = json_decode($request->get_body());
         $route = $request->get_route();
