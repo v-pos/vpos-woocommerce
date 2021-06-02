@@ -15,17 +15,17 @@ class TransactionRepository {
         );
     }
 
-    public function insert_transaction($tranasction) {
+    public function insert_transaction($transaction) {
         $this->db->insert( 
           $this->transactions_table, 
           array(
             'id' => $tranasction->get_uuid(),
-            'transaction_id' => $tranasction->get_transaction_id(),
-            'status' => $tranasction->get_status(),
-            'type' => $tranasction->get_type(),
-            'amount' => $tranasction->get_amount(),
-            'mobile' => $tranasction->get_mobile(), 
-            'status_reason' => $tranasction->get_status_reason(),
+            'transaction_id' => $transaction->get_transaction_id(),
+            'status' => $transaction->get_status(),
+            'type' => $transaction->get_type(),
+            'amount' => $transaction->get_amount(),
+            'mobile' => $transaction->get_mobile(), 
+            'status_reason' => $transaction->get_status_reason(),
             'created_at' => current_time('mysql'),
             'updated_at' => null
           )
