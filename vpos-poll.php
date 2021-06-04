@@ -767,8 +767,6 @@ if (empty($_COOKIE['vpos_merchant'])) {
       state.id = "state";
       state.classList.add("wg-card");
       state.classList.add("wg-state");
-      document.getElementById("submit").style.display = "initial";
-      document.getElementById("submit").textContent = "TENTAR NOVAMENTE";
       state.innerHTML = "<h5>Tempo Esgotado</h5><img class='wg-state-icon' src='https://backoffice.vpos.ao/images/warning.png'>"
       return state;
     }
