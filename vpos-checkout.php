@@ -624,7 +624,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
     var timer = null;
     var numberIsAdded = false;
     const HANDLER_LOCATION = "<?php echo home_url() . '/wp-content/plugins/vpos-woocommerce/handle.php'; ?>";
-    const poll_url = "<?php echo home_url(). '/cart-vpos-poll'; ?>";
+    const poll_url = "<?php echo home_url(). '/payment'; ?>";
   
     function isValidPhoneNumber(mobile) {
       var phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();

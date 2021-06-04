@@ -77,7 +77,7 @@
     }
 
     function add_poll_page() {
-        $page_title = 'cart-vpos-poll';
+        $page_title = 'payment';
         $checkout_page = get_page_by_title($page_title, 'OBJECT', 'page');
         
         if(empty($checkout_page)) {
@@ -98,7 +98,7 @@
 
     function hide_vpos_pages_from_website($args) {
         $vpos_checkout_page = get_page_by_title('vpos-checkout', 'OBJECT', 'page');
-        $vpos_poll_page = get_page_by_title('cart-vpos-poll', 'OBJECT', 'page');
+        $vpos_poll_page = get_page_by_title('payment', 'OBJECT', 'page');
 
         $args['exclude'] = '';
         $args['exclude'] .= "" . $vpos_poll_page->ID . "," . "" . $vpos_checkout_page->ID . ",";
