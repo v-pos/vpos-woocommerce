@@ -32,6 +32,7 @@ class TransactionRepository {
         );
     }
 
+    // To upgrade table see wordpress documentation: https://codex.wordpress.org/Creating_Tables_with_Plugins
     public function create_transactions_table() {
         $charset_collate = $this->db->get_charset_collate();
 
