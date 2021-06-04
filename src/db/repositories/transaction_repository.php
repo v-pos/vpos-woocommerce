@@ -36,7 +36,7 @@ class TransactionRepository {
     public function create_transactions_table() {
         $charset_collate = $this->db->get_charset_collate();
 
-        $sql = "CREATE TABLE $this->transactions_table (
+        $sql = "CREATE TABLE IF NOT EXISTS $this->transactions_table (
             id varchar(255) PRIMARY KEY NOT NULL,
             transaction_id varchar(255),
             status varchar(255),
