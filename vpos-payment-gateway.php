@@ -20,15 +20,6 @@
 
     define("VPOS_DIR", plugin_dir_path(__FILE__));
 
-    // This value is post fixed to all table names created in this plugin.
-    // Example: `wp_transactions_1_0`
-    // When updating or changing database schema please update this field by_incrementing the version number.
-    // Example: Defining the `VPOS_VERSION` constant to `1_1` will produce the following: 
-    // `wp_transactions_1_1`
-    // This makes it easier to deal with changes in the database table that might occur
-    // during plugin updates.
-    define("VPOS_VERSION", "1_1");
-
     require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
     require_once(ABSPATH . "wp-admin/includes/class-wp-filesystem-direct.php");
     require_once("src/controllers/vpos_endpoint.php");

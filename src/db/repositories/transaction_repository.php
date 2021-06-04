@@ -6,7 +6,7 @@ class TransactionRepository {
 
     public function __construct($wpdb) {
         $this->db = $wpdb;
-        $this->transactions_table = $this->db->prefix . '_vpos_woocommerce_transacations_' . VPOS_VERSION;
+        $this->transactions_table = $this->db->prefix . 'vpos_woocommerce_transacations';
     }
     
     public function get_transaction($uuid) {  
