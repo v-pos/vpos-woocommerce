@@ -29,5 +29,6 @@ class VposOrderHandler {
         setcookie("vpos_merchant", null, time() - 3600, "/");
 		setcookie("vpos_total_amount", null, time() - 3600, "/");
 		setcookie("vpos_order_id", null, time() - 3600, "/");
+        setcookie("vpos_order_billing_telephone", null, time() - 3600, "/");
     }
 }

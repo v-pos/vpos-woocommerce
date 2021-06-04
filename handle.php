@@ -16,9 +16,11 @@
 
 require($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/woocommerce/woocommerce.php');
-require("src/vpos.php");
-require("src/request_handler.php");
-require("src/vpos_order_handler.php");
+require_once("src/http/vpos.php");
+require_once("src/http/request_handler.php");
+require_once("src/vpos_order_handler.php");
+require_once("src/db/repositories/transaction_repository.php");
+require_once("src/db/entities/transaction.php");
 
 if (!defined('ABSPATH')) {
     exit;
@@ -38,20 +40,44 @@ if ($settings == null) {
     exit(1);
 }
 
+$uuid = uuid();
+$payment_callback_url = get_rest_url(null, "vpos-woocommerce/v1/cart/" . $uuid . "/confirmation");
+
 $token = $settings['vpos_token'];
 $pos_id = $settings['gpo_pos_id'];
-$payment_url = "https://hard_coded_link"; // change to wordpress host url + page to handle callback eg: https://soba-store.com/vpos-confirmation
+$payment_url = $payment_callback_url; // change to wordpress host url + page to handle callback eg: https://soba-store.com/vpos-confirmation
 $refund_url = "https://hard_coded_link"; // change to wordpress host url + page to handle callback eg: https://soba-store.com/vpos-confirmation
 $mode = $settings['vpos_environment'];
 
 $handler = new RequestHandler();
 $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url, $mode);
 
+
+function register_transaction($uuid, $mobile, $amount, $transaction_id) {
+    global $wpdb;
+
+    $status_reason = null;
+    $status = null;
+    $type = null;
+
+    $transaction = new Transaction($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type);
+	$transacion_repository = new TransactionRepository($wpdb);
+    $transacion_repository->insert_transaction($transaction);
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mobile = $_POST['mobile'];
     $amount = $_POST['amount'];
 
-    $handler->handlePayment($vpos, $mobile, $amount);
+    addPhoneToCookies($mobile);
+
+    $response_data = $handler->handleNewPayment($vpos, $mobile, $amount);
+    $transaction_id = $response_data["location"];
+
+    register_transaction($uuid, $mobile, $amount, $transaction_id);
+    header('Content-Type: application/json');
+    http_response_code($response_data["code"]);
+    echo $uuid;
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {

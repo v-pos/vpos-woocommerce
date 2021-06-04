@@ -534,14 +534,20 @@ p {
 <?php
 /**
  *
- * Template Name: vPOS Checkout Page
+ * Template Name: vPOS Poll Page
  */
 
 date_default_timezone_set("Africa/Luanda");
 
 if (empty($_COOKIE['vpos_merchant'])) {
-  echo("<script>location.href = '". site_url() ."'</script>");
-} 
+    echo("<script>location.href = '". site_url() ."'</script>");
+  } 
+?>
+
+<?php 
+    if (empty($_GET['id'])) {
+        echo("<script>location.href = '". site_url() ."'</script>");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -551,7 +557,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/google-libphonenumber@3.2.17/dist/libphonenumber.js" integrity="sha256-y7g6xQm+MB2sFTvdhBwEMDWg9sAUz9msCc2973e0wjg=" crossorigin="anonymous"></script>
   <head>
-  <body onload="init();">
+  <body onload="init();" >
   <div class="wg-container container">
             <div class="wg-card">
                 <h3>Detalhes do pagamento</h3>
@@ -579,14 +585,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
 
                 <div class="input-container">
                     <img class="icon float" src="https://backoffice.vpos.ao/images/mcx-logo.svg">
-                    <?php 
-                        if (empty($_COOKIE['vpos_order_billing_telephone'])) {
-                          echo("<input oninput='checkMobileNumber()' class='float' id='mobile' name='telephone' type='text' placeholder='Digite o seu número de telemóvel' maxlength='9' required></span>");
-                        } else {
-                          echo("<input oninput='checkMobileNumber()' value='" . $_COOKIE['vpos_order_billing_telephone'] . "' class='float' id='mobile' name='telephone' type='text' placeholder='Digite o seu número de telemóvel' maxlength='9' required></span>");
-                        }
-                    ?> 
-                    
+                    <input oninput="checkMobileNumber()" class="float" id="mobile" name="telephone" type="text" placeholder="Digite o seu número de telemóvel" maxlength="9" required></span>
                 </div>
             </div>
 
@@ -618,30 +617,12 @@ if (empty($_COOKIE['vpos_merchant'])) {
         </div>
     <script>
 
-    const ONE_SECOND = 1000;
+    const EVERY_SECOND = 1000;
     var mobile = "";
     var state = "initial";
     var timer = null;
     var numberIsAdded = false;
-    const HANDLER_LOCATION = "<?php echo home_url() . '/wp-content/plugins/vpos-woocommerce/handle.php'; ?>";
-    const poll_url = "<?php echo home_url(). '/payment'; ?>";
-  
-    function isValidPhoneNumber(mobile) {
-      var phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
-      var number = phoneUtil.parse("+244" + mobile);
-      return phoneUtil.isValidNumberForRegion(number, "AO");
-    }
-
-    function checkMobileNumber() {
-      this.mobile = document.getElementById("mobile").value;
-      if (this.isValidPhoneNumber(this.mobile) == true) {
-        document.getElementById("submit").classList.add("button-active");
-        document.getElementById("submit").classList.remove("button-disabled");
-      } else {
-        document.getElementById("submit").classList.remove("button-active");
-        document.getElementById("submit").classList.add("button-disabled");
-      }
-    }
+    const HANDLER_LOCATION = "<?php echo home_url().'/wp-content/plugins/vpos-woocommerce/handle.php'; ?>";
 
     function reload() {
         location.reload();
@@ -704,7 +685,25 @@ if (empty($_COOKIE['vpos_merchant'])) {
       {validateStatus: (status => status < 400)})
       .then(function (response) {
         if (response.status == 200) {
-          if (response.data.status == "accepted") {
+          
+
+          return;
+        }
+      }).catch(function (error) {
+        var stateComponent = document.getElementById("state");
+        var state = errorComponent();
+        stateComponent.replaceWith(state);
+      });
+    }
+
+    function poll(id) {
+        var redirect_url = "<?php echo get_rest_url(null, "vpos-woocommerce/v1/cart/"); ?>" + id;
+      return axios.get(redirect_url
+      ,{validateStatus: (status) => status < 400 })
+      .then(function (response) {
+          this.state = "processing";
+          if (response.status == 200) {
+            if (response.data.status == "accepted") {
             this.state == "confirmed";
             var stateComponent = document.getElementById("state");
             var state = succeedComponent();
@@ -720,61 +719,15 @@ if (empty($_COOKIE['vpos_merchant'])) {
             var stateComponent = document.getElementById("state");
             var state = errorComponent();
             stateComponent.replaceWith(state);
-            document.getElementById("submit").style.display = "none";
-            document.getElementById("retry").style.display = "block";
             clearInterval(this.timer);
             showErrorMessage(response.data.status_reason);
-            document.getElementById("retry").classList.add("button-active");
             return;
           }
-
-          return;
-        }
-      }).catch(function (error) {
-        var stateComponent = document.getElementById("state");
-        var state = errorComponent();
-        stateComponent.replaceWith(state);
-      });
-    }
-
-    function poll(id) {
-      return axios.get(HANDLER_LOCATION + "?id=" + id + "&type=poll"
-      ,{validateStatus: (status) => status < 400 })
-      .then(function (response) {
-          this.state = "processing";
-          if (response.status == 303) {
-            get(response.data);
-            return;
-          } 
+        } 
       }).catch(function (error){
             var stateComponent = document.getElementById("state");
             var state = errorComponent();
             stateComponent.replaceWith(state);
-      });
-    }
-
-    function sendPaymentRequest(amount, mobile) {
-      var form = new FormData();
-      form.append('mobile', mobile);
-      form.append('amount', parseFloat(amount));
-      return axios.post(HANDLER_LOCATION,
-       form,
-      headers)
-      .then(response => {
-          const transaction_id = response.data;
-          const redirect_url = "<?php echo get_rest_url(null, "vpos-woocommerce/v1/cart/vpos/"); ?>" + transaction_id;
-          window.location.href = poll_url + "?id=" + transaction_id;
-        return response;
-      }).catch(error => {
-        if (this.state == "initial") {
-          this.state = "error";
-          addMobileNumberToSummaryTable(mobile);
-          var stateComponent = document.getElementById("state");
-          var state = errorComponent();
-          stateComponent.replaceWith(state);
-          document.getElementById("submit").textContent = "TENTAR NOVAMENTE";
-        }
-        return error;
       });
     }
 
@@ -814,8 +767,6 @@ if (empty($_COOKIE['vpos_merchant'])) {
       state.id = "state";
       state.classList.add("wg-card");
       state.classList.add("wg-state");
-      document.getElementById("submit").style.display = "initial";
-      document.getElementById("submit").textContent = "TENTAR NOVAMENTE";
       state.innerHTML = "<h5>Tempo Esgotado</h5><img class='wg-state-icon' src='https://backoffice.vpos.ao/images/warning.png'>"
       return state;
     }
@@ -838,22 +789,52 @@ if (empty($_COOKIE['vpos_merchant'])) {
       return state;
     }
 
-    document.getElementById("submit").addEventListener("click", function() {
-      if (this.mobile == "" || this.mobile == null) {
-        this.mobile = document.getElementById("mobile").value;
-      } 
-
-      const total_amount = <?php echo $_COOKIE['vpos_total_amount']; ?>;
-      if (isValidPhoneNumber(this.mobile)) {
-        sendPaymentRequest(total_amount, this.mobile);
-      }
-    });
-
-
     function init() {
-      checkMobileNumber();
       console.log('%cThis site uses vPOS to enable payments. Register and start your journey with us. %chttps://vpos.ao', 'font-weight:bold', 'color: red');
+      this.state = "processing";
+      
+      const mobile = "<?php echo($_COOKIE['vpos_order_billing_telephone']); ?>";
+      addMobileNumberToSummaryTable(mobile);
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const transaction_id = urlParams.get('id');
+
+      var stateComponent = document.getElementById("state");
+      var state = confirmationComponent();
+      stateComponent.replaceWith(state);
+      document.getElementById("submit").style.display = "none";
+
+      var countDownDate = new Date().getTime() + 200000;
+
+      this.timer = setInterval(function() {
+        var current_time = new Date().getTime();
+        var time_remaining = 0;
+        var seconds = 0;
+        var time_remaining_in_seconds = 0;
+
+        if (this.state == "rejected" || this.state == "confirmed" || this.state == "expired") {
+            time_remaining = -1;
+        } else {
+            time_remaining = countDownDate - current_time;
+            seconds = Math.floor((time_remaining % (1000 * 60)) / 1000);
+            time_remaining_in_seconds = Math.floor((time_remaining % (1000 * 60 * 60)) / 1000);
+            document.getElementById("timer").innerHTML = time_remaining_in_seconds;
+        }
+                
+        if (time_remaining < 0) {
+            clearInterval(this.timer);
+            var stateComponent = document.getElementById("state");
+            var state = expiredComponent();
+            stateComponent.replaceWith(state);
+            this.state = "expired";
+        }
+
+        if (time_remaining > 0 && Math.floor(60 % seconds) == 0 && this.state == "processing") {
+            poll(transaction_id);
+        }
+      }, EVERY_SECOND);
     }
+
     </script>
   </body>
 </html>

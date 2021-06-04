@@ -4,7 +4,7 @@
  * Plugin Name:       vPOS - Payment Gateway
  * Plugin URI:        https://github.com/v-pos/vpos-woocommerce
  * Description:       Uma melhor forma de aceitar pagamentos.
- * Version:           1.0
+ * Version:           1.1
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            vPOS
@@ -18,11 +18,21 @@
         exit;
     }
 
+    define("VPOS_DIR", plugin_dir_path(__FILE__));
+
     require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
     require_once(ABSPATH . "wp-admin/includes/class-wp-filesystem-direct.php");
+    require_once("src/controllers/vpos_endpoint.php");
+
+    function register_vpos_routes() {
+        $routes = new VPOS_Routes();
+        $routes->register_routes();
+    }
+    add_action("rest_api_init", "register_vpos_routes");
 
     function move_checkout_file_to_themes_dir() {
         $checkout_file_path = __DIR__  . "/vpos-checkout.php";
+        $poll_file_path = __DIR__  . "/vpos-poll.php";
         $current_themes_path = get_template_directory();
 
         $filesystem = new WP_Filesystem_Direct(false);
@@ -35,14 +45,80 @@
         } else {
             error_log("vpos-checkout.php was not found in plugin directory");
         }
+
+        if ($filesystem->exists($poll_file_path)) {
+            if($filesystem->copy($poll_file_path, $current_themes_path . "/vpos-poll.php", true)) {
+            } else {
+                error_log("failed to copy file from " . $poll_file_path . " to " . $current_themes_path);
+            }
+        } else {
+            error_log("vpos-poll.php was not found in plugin directory");
+        }
+    }
+
+    function add_checkout_page() {
+        $page_title = 'vpos-checkout';
+        $checkout_page = get_page_by_title($page_title, 'OBJECT', 'page');
+
+        if(empty($checkout_page)) {
+            wp_insert_post(
+                array(
+                'comment_status' => 'close',
+                'post_author'    => 1,
+                'post_title'     => ucwords($page_title),
+                'post_name'      => strtolower(str_replace(' ', '-', trim($page_title))),
+                'post_status'    => 'publish',
+                'post_content'   => '',
+                'post_type'      => 'page',
+                'page_template'  => 'vpos-checkout.php'
+                )
+            );
+        }
+    }
+
+    function add_poll_page() {
+        $page_title = 'payment';
+        $checkout_page = get_page_by_title($page_title, 'OBJECT', 'page');
+        
+        if(empty($checkout_page)) {
+            wp_insert_post(
+                array(
+                'comment_status' => 'close',
+                'post_author'    => 1,
+                'post_title'     => ucwords($page_title),
+                'post_name'      => strtolower(str_replace(' ', '-', trim($page_title))),
+                'post_status'    => 'publish',
+                'post_content'   => '',
+                'post_type'      => 'page',
+                'page_template'  => 'vpos-poll.php'
+                )
+            );
+        }
+    }
+
+    function hide_vpos_pages_from_website($args) {
+        $vpos_checkout_page = get_page_by_title('vpos-checkout', 'OBJECT', 'page');
+        $vpos_poll_page = get_page_by_title('payment', 'OBJECT', 'page');
+
+        $args['exclude'] = '';
+        $args['exclude'] .= "" . $vpos_poll_page->ID . "," . "" . $vpos_checkout_page->ID . ",";
+        return $args;
+    }
+    add_filter('wp_page_menu_args', 'hide_vpos_pages_from_website', 999, 1);
+
+    function create_transactions_table() {
+        global $wpdb;
+        $transaction_repository = new TransactionRepository($wpdb);
+        $transaction_repository->create_transactions_table();
     }
 
     function run_init_commands_after_installation() {
-
         $slug = (dirname(plugin_basename(__FILE__)));
         add_option( 'Activated_Plugin', $slug);
-        error_log("Plugin has been activated: " . $slug);
         move_checkout_file_to_themes_dir();
+        add_checkout_page();
+        add_poll_page();
+        create_transactions_table();
     }
     register_activation_hook(__FILE__, 'run_init_commands_after_installation');
       
@@ -110,11 +186,16 @@
             return $available_gateways;
         }
 
-        function storeInfoInCookies($merchant, $total_amount, $order_id)
+        function addPhoneToCookies($order_billing_telephone) {
+            setcookie("vpos_order_billing_telephone", $order_billing_telephone, time() + 3600, "/");
+        }
+
+        function storeInfoInCookies($merchant, $total_amount, $order_id, $order_billing_telephone)
         {
             setcookie("vpos_merchant", $merchant, time() + 3600, "/");
             setcookie("vpos_total_amount", $total_amount, time() + 3600, "/");
             setcookie("vpos_order_id", $order_id, time() + 3600, "/");
+            setcookie("vpos_order_billing_telephone", $order_billing_telephone, time() + 3600, "/");
         }
 
         function formatTotalAmount($total_amount)
