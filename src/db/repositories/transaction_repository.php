@@ -32,8 +32,6 @@ class TransactionRepository {
         );
     }
 
-    // TODO: This should probably be moved to a different class since it is not the 
-    // repositories responsability to create the table schema.
     public function create_transactions_table() {
         $charset_collate = $this->db->get_charset_collate();
 
