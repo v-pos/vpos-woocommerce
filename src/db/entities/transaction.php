@@ -10,12 +10,13 @@ class Transaction {
     private $type;
 
     public function __construct($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type) {
-        $this->uuid = $uuid;
-        $this->transaction_id = $transaction_id;
-        $this->amount = $amount;
-        $this->mobile = $mobile;
-        $this->status = $status_reason;
-        $this->type = $type;
+        $this->uuid = trim($uuid);
+        $this->transaction_id = trim($transaction_id);
+        $this->amount = trim($amount);
+        $this->mobile = trim($mobile);
+        $this->status = trim($status);
+        $this->status_reason = trim($status_reason);
+        $this->type = trim($type);
     }
 
     public function get_uuid() {
