@@ -1,6 +1,7 @@
 <?php
 
 require_once(VPOS_DIR . "/src/uuid.php");
+require(VPOS_DIR . "src/db/entities/transaction.php");
 require(VPOS_DIR . "src/db/repositories/transaction_repository.php");
 
 class VPOS_Routes extends WP_REST_Controller
@@ -71,23 +72,47 @@ class VPOS_Routes extends WP_REST_Controller
     {
         $body = json_decode($request->get_body());
         $route = $request->get_route();
-        $uuid = $this->extract_uuid_from_route($route);
+        $transaction_uuid = $this->extract_uuid_from_route($route);
 
         global $wpdb;
         $transaction_repository = new TransactionRepository($wpdb);
 
-        $result = $transaction_repository->get_transaction($uuid);
+        $result = $transaction_repository->get_transaction($transaction_uuid);
 
-        if (count($result) == 0)
-        {
+        if (count($result) == 0) {
             $message = json_encode(array(
                 "error" => "transaction not found"
             ));
             return new WP_REST_Response($message, 404);
         }
 
-        $transaction = $result[0];
-        $update_transaction_result = $transaction_repository->update_transaction($uuid, $body);
+        if ($result[0]->transaction_id != $body->{"id"}) {
+            $message = json_encode(array(
+                "error" => "transaction not found"
+            ));
+            return new WP_REST_Response($message, 404);
+        }
+
+        if ($result[0]->mobile != $body->{"mobile"}) {
+            $message = json_encode(array(
+                "error" => "transaction not found"
+            ));
+            return new WP_REST_Response($message, 404);
+        }
+
+        if ($result[0]->status == "accepted") {
+            return new WP_REST_Response(null, 200);
+        }
+
+        $transaction_id = null;
+        $amount = null;
+        $mobile = null;
+        $status = $body->{"status"};
+        $status_reason = $body->{"status_reason"};
+        $type = $body->{"type"};
+
+        $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type);
+        $transaction_repository->update_transaction($transaction_uuid, $transaction_model);
         return new WP_REST_Response(null, 201);
     }
 
