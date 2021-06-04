@@ -19,7 +19,7 @@ class TransactionRepository {
         $this->db->insert( 
           $this->transactions_table, 
           array(
-            'id' => $tranasction->get_uuid(),
+            'id' => $transaction->get_uuid(),
             'transaction_id' => $transaction->get_transaction_id(),
             'status' => $transaction->get_status(),
             'type' => $transaction->get_type(),
