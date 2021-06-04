@@ -47,24 +47,21 @@ class TransactionRepository {
             created_at timestamp,
             updated_at timestamp,
 
-            INDEX (id)
+            INDEX (id),
+            UNIQUE(id),
+            UNIQUE(transaction_id)
           ) $charset_collate;";
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
     }
     
-    public function update_transaction($id, $body) {
-        $type = $body->{"type"};
-        $status = $body->{"status"};
-        $status_reason = $body->{"status_reason"};
-        $updated_at_date = current_time('mysql');
-      
+    public function update_transaction($id, $transaction) {
         return $this->db->update($this->transactions_table, array(
-          "type" => $type,
-          "status" => $status,
-          "status_reason" => $status_reason,
-          "updated_at" => $updated_at_date
+          "type" => $transaction->get_type(),
+          "status" => $transaction->get_status(),
+          "status_reason" => $transaction->get_status_reason(),
+          "updated_at" => current_time('mysql')
         ), array(
           "id" => $id
         ));
