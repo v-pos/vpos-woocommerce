@@ -785,7 +785,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
       const state = document.createElement("div");
       state.id = "state";
       state.classList.add("wg-card");
-      state.innerHTML = "<div class='wg-state'><h5>Confirme o Pagamento no seu telemóvel</h5><p id='timer' class='clock'>0:00</p></div>"
+      state.innerHTML = "<div class='wg-state'><h5>Confirme o Pagamento no seu telemóvel</h5><p id='timer' class='clock'>99 segundos</p></div>"
       return state;
     }
 
@@ -804,7 +804,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
       stateComponent.replaceWith(state);
       document.getElementById("submit").style.display = "none";
 
-      var countDownDate = new Date().getTime() + 200000;
+      var countDownDate = new Date().getTime() + 99999;
 
       this.timer = setInterval(function() {
         var current_time = new Date().getTime();
@@ -818,7 +818,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
             time_remaining = countDownDate - current_time;
             seconds = Math.floor((time_remaining % (1000 * 60)) / 1000);
             time_remaining_in_seconds = Math.floor((time_remaining % (1000 * 60 * 60)) / 1000);
-            document.getElementById("timer").innerHTML = time_remaining_in_seconds;
+            document.getElementById("timer").innerHTML = time_remaining_in_seconds + " segundos";
         }
                 
         if (time_remaining < 0) {
