@@ -1,6 +1,7 @@
 <?php
 
 require_once(VPOS_DIR . "/src/uuid.php");
+require_once(VPOS_DIR . "/src/vpos_order_handler.php");
 require(VPOS_DIR . "src/db/entities/transaction.php");
 require(VPOS_DIR . "src/db/repositories/transaction_repository.php");
 
@@ -53,8 +54,8 @@ class VPOS_Routes extends WP_REST_Controller
             return new WP_REST_Response($message, 404);
         }
 
-        $transaction = $result[0];
-        return new WP_REST_Response($transaction, 200);
+        $transaction_status = $result[0]->status;
+        return new WP_REST_Response($transaction_status, 200);
     }
 
     /**
@@ -111,8 +112,13 @@ class VPOS_Routes extends WP_REST_Controller
         $status_reason = $body->{"status_reason"};
         $type = $body->{"type"};
 
-        $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type);
+        $order_id = $result[0]->order_id;
+        VposOrderHandler::completeOrder($order_id);
+       
+        $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
         $transaction_repository->update_transaction($transaction_uuid, $transaction_model);
+        
+        VposOrderHandler::flushOrderFromCookies();
         return new WP_REST_Response(null, 201);
     }
 

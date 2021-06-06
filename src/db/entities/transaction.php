@@ -8,8 +8,9 @@ class Transaction {
     private $status;
     private $status_reason;
     private $type;
+    private $order_id;
 
-    public function __construct($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type) {
+    public function __construct($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id) {
         $this->uuid = trim($uuid);
         $this->transaction_id = trim($transaction_id);
         $this->amount = trim($amount);
@@ -17,6 +18,7 @@ class Transaction {
         $this->status = trim($status);
         $this->status_reason = trim($status_reason);
         $this->type = trim($type);
+        $this->order_id = trim($order_id);
     }
 
     public function get_uuid() {
@@ -45,5 +47,9 @@ class Transaction {
 
     public function get_type() {
         return $this->type;
+    }
+
+    public function get_order_id() {
+        return $this->order_id;
     }
 }

@@ -25,6 +25,7 @@ class TransactionRepository {
             'type' => $transaction->get_type(),
             'amount' => $transaction->get_amount(),
             'mobile' => $transaction->get_mobile(), 
+            'order_id' => $transaction->get_order_id(),
             'status_reason' => $transaction->get_status_reason(),
             'created_at' => current_time('mysql'),
             'updated_at' => null
@@ -43,6 +44,7 @@ class TransactionRepository {
             type varchar(255),
             amount varchar(255),
             mobile varchar(255),
+            order_id varchar(255),
             status_reason varchar(255),
             created_at timestamp,
             updated_at timestamp,
