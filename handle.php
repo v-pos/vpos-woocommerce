@@ -18,7 +18,6 @@ require($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/woocommerce/woocommerce.php');
 require_once("src/http/vpos.php");
 require_once("src/http/request_handler.php");
-require_once("src/vpos_order_handler.php");
 require_once("src/db/repositories/transaction_repository.php");
 require_once("src/db/entities/transaction.php");
 
@@ -59,8 +58,9 @@ function register_transaction($uuid, $mobile, $amount, $transaction_id) {
     $status_reason = null;
     $status = null;
     $type = null;
+    $order_id = $_COOKIE['vpos_order_id'];
 
-    $transaction = new Transaction($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type);
+    $transaction = new Transaction($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
 	$transacion_repository = new TransactionRepository($wpdb);
     $transacion_repository->insert_transaction($transaction);
 }
@@ -78,25 +78,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('Content-Type: application/json');
     http_response_code($response_data["code"]);
     echo $uuid;
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $id = $_GET['id'];
-    $type = $_GET['type'];
-    $order_id = $_GET['order_id'];
-
-    if ($type == 'poll') {
-        $handler->handlePollResource($vpos, $id);
-    }
-    
-    if ($type == 'get') {
-        $handler->handleGetTransaction($vpos, $id);
-    }
-
-    if ($order_id != null && $type == 'complete-order') {
-        VposOrderHandler::completeOrder($order_id);
-        VposOrderHandler::flushOrderFromCookies();
-        header('Content-Type: application/json');
-        http_response_code(200);
-    }
 }

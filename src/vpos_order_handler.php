@@ -22,7 +22,7 @@ class VposOrderHandler {
     
     public static function completeOrder($order_id) {
         $order = wc_get_order($order_id);
-        $order->update_status('completed');
+        $order->update_status('processing');
     }
 
     public static function flushOrderFromCookies() {

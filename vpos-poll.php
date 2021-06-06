@@ -665,19 +665,11 @@ if (empty($_COOKIE['vpos_merchant'])) {
     }
 
     function completeOrder() {
-      const orderId = <?php echo $_COOKIE['vpos_order_id']; ?>;
-      return axios.get(HANDLER_LOCATION + "?order_id=" + orderId + "&type=complete-order",
-      {validateStatus: (status => status < 300)})
-      .then(function (response) {
         document.getElementById("url").innerText = "Ir para o sumário da compra"
         document.getElementById("url").href = "<?php 
                     $order = wc_get_order($_COOKIE['vpos_order_id']);
                     echo $order->get_checkout_order_received_url(); 
-            ?>";
-        return;
-      }).catch(function (error) {
-        return;
-      });
+        ?>";
     }
 
     function get(id) {
@@ -703,7 +695,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
       .then(function (response) {
           this.state = "processing";
           if (response.status == 200) {
-            if (response.data.status == "accepted") {
+            if (response.data == "accepted") {
             this.state == "confirmed";
             var stateComponent = document.getElementById("state");
             var state = succeedComponent();
