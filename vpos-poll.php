@@ -703,7 +703,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
       .then(function (response) {
           this.state = "processing";
           if (response.status == 200) {
-            if (response.data.status == "accepted") {
+            if (response.data == "accepted") {
             this.state == "confirmed";
             var stateComponent = document.getElementById("state");
             var state = succeedComponent();
