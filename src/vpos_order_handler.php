@@ -23,10 +23,18 @@ class VposOrderHandler
     public static function update_order($order_id)
     {
         $order = wc_get_order($order_id);
-        if ($order->has_downloadable_item()) {
+        $products = $order->get_items();
+
+        if (count($products) == 1) {
+            if ($order->has_downloadable_item()) {
+                $order->update_status("completed");
+            } else {
+                $order->update_status("processing");
+            }
+        } elseif (count($products) >= 2) {
             $order->update_status("processing");
         } else {
-            $order->update_status("completed");
+            error_log("can't have order with 0 items");
         }
     }
     
