@@ -12,7 +12,7 @@ class TransactionRepository {
     public function get_transaction($uuid) {  
         return $this->db->get_results(
           "SELECT * FROM $this->transactions_table WHERE ID = '$uuid'"
-        );
+        )[0];
     }
 
     public function insert_transaction($transaction) {
