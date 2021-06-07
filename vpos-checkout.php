@@ -623,7 +623,10 @@ if (empty($_COOKIE['vpos_merchant'])) {
     var state = "initial";
     var timer = null;
     var numberIsAdded = false;
-    const HANDLER_LOCATION = "<?php echo home_url() . '/wp-content/plugins/vpos-woocommerce/handle.php'; ?>";
+    const HANDLER_LOCATION = "<?php 
+     $plugin_path = str_replace("/var/www/html", "", VPOS_DIR);
+     echo home_url() . $plugin_path . 'handle.php'; 
+    ?>";
     const poll_url = "<?php echo home_url(). '/payment'; ?>";
   
     function isValidPhoneNumber(mobile) {
