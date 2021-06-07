@@ -7,7 +7,6 @@ require(VPOS_DIR . "src/db/repositories/transaction_repository.php");
 
 class VPOS_Routes extends WP_REST_Controller
 {
-
     public function register_routes()
     {
         $namespace = "vpos-woocommerce/v1";
@@ -49,8 +48,7 @@ class VPOS_Routes extends WP_REST_Controller
 
         $result = $transaction_repository->get_transaction($uuid);
 
-        if ($result == null)
-        {
+        if ($result == null) {
             $message = json_encode(array(
                 "error" => "transaction not found"
             ));
@@ -162,4 +160,3 @@ class VPOS_Routes extends WP_REST_Controller
         return str_replace("/confirmation", "", $modified_route);
     }
 }
-
