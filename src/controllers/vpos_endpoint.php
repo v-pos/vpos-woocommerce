@@ -13,7 +13,8 @@ class VPOS_Routes extends WP_REST_Controller
         $namespace = "vpos-woocommerce/v1";
         $base = "cart";
 
-        // Endpoint -> http://your-site.com/wp-json/vpos-woocommerce/v1/cart/fc4d77b0-a4c2-4417-b537-a62f7c88dd06/confirmation
+        // This route will generate the following URI:
+        // http://your-site.com/wp-json/vpos-woocommerce/v1/cart/fc4d77b0-a4c2-4417-b537-a62f7c88dd06/confirmation
         register_rest_route($namespace, $base . "/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/confirmation", array(
             array(
                 "methods" => "POST",
@@ -24,6 +25,8 @@ class VPOS_Routes extends WP_REST_Controller
                 'permission_callback' => '__return_true'
             )
         ));
+        // This route will generate the following URI:
+        // http://your-site.com/wp-json/vpos-woocommerce/v1/cart/fc4d77b0-a4c2-4417-b537-a62f7c88dd06
         register_rest_route($namespace, $base . "/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}", array(
             array(
                 "methods" => "GET",
@@ -101,24 +104,40 @@ class VPOS_Routes extends WP_REST_Controller
             return new WP_REST_Response($message, 404);
         }
 
-        if ($result[0]->status == "accepted") {
-            return new WP_REST_Response(null, 200);
+        if ($body->{"status"} == "accepted") {
+            $transaction_id = null;
+            $amount = null;
+            $mobile = null;
+            $status = $body->{"status"};
+            $status_reason = $body->{"status_reason"};
+            $type = $body->{"type"};
+
+            $order_id = $result[0]->order_id;
+            VposOrderHandler::update_order_status($order_id, 'processing');
+           
+            $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
+            $transaction_repository->update_transaction($transaction_uuid, $transaction_model);
+            
+            VposOrderHandler::flush_order_from_cookies();
+        }
+        
+        if ($body->{"status"} == "rejected") {
+            $transaction_id = null;
+            $amount = null;
+            $mobile = null;
+            $status = $body->{"status"};
+            $status_reason = $body->{"status_reason"};
+            $type = $body->{"type"};
+
+            $order_id = $result[0]->order_id;
+            VposOrderHandler::update_order_status($order_id, 'failed');
+        
+            $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
+            $transaction_repository->update_transaction($transaction_uuid, $transaction_model);
+            
+            VposOrderHandler::flush_order_from_cookies();
         }
 
-        $transaction_id = null;
-        $amount = null;
-        $mobile = null;
-        $status = $body->{"status"};
-        $status_reason = $body->{"status_reason"};
-        $type = $body->{"type"};
-
-        $order_id = $result[0]->order_id;
-        VposOrderHandler::completeOrder($order_id);
-       
-        $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
-        $transaction_repository->update_transaction($transaction_uuid, $transaction_model);
-        
-        VposOrderHandler::flushOrderFromCookies();
         return new WP_REST_Response(null, 201);
     }
 
