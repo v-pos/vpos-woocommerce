@@ -18,17 +18,29 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class VposOrderHandler {
-    
-    public static function completeOrder($order_id) {
+class VposOrderHandler
+{
+    public static function update_order($order_id)
+    {
         $order = wc_get_order($order_id);
-        $order->update_status('processing');
+        if ($order->has_downloadable_item()) {
+            $order->update_status("processing");
+        } else {
+            $order->update_status("completed");
+        }
+    }
+    
+    public static function update_order_status($order_id, $status)
+    {
+        $order = wc_get_order($order_id);
+        $order->update_status($status);
     }
 
-    public static function flushOrderFromCookies() {
+    public static function flush_order_from_cookies()
+    {
         setcookie("vpos_merchant", null, time() - 3600, "/");
-		setcookie("vpos_total_amount", null, time() - 3600, "/");
-		setcookie("vpos_order_id", null, time() - 3600, "/");
+        setcookie("vpos_total_amount", null, time() - 3600, "/");
+        setcookie("vpos_order_id", null, time() - 3600, "/");
         setcookie("vpos_order_billing_telephone", null, time() - 3600, "/");
     }
 }

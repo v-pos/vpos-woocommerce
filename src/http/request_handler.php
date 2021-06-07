@@ -18,14 +18,15 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class RequestHandler {
-
-    public function __construct() { 
+class RequestHandler
+{
+    public function __construct()
+    {
         // Empty Constructor
     }
 
-    public function handlePayment($vpos, $mobile, $amount) {
-        
+    public function handlePayment($vpos, $mobile, $amount)
+    {
         $response_data = $vpos->newPayment($mobile, $amount);
 
         if ($response_data["message"] == "Accepted") {
@@ -39,12 +40,14 @@ class RequestHandler {
         }
     }
 
-    public function handleNewPayment($vpos, $mobile, $amount) {
+    public function handleNewPayment($vpos, $mobile, $amount)
+    {
         $response_data = $vpos->newPayment($mobile, $amount);
         return $response_data;
     }
 
-    public function handlePollResource($vpos, $id) {
+    public function handlePollResource($vpos, $id)
+    {
         $response_data = $vpos->pollResource($id);
 
         if ($response_data["message"] == "See Other") {
@@ -58,7 +61,8 @@ class RequestHandler {
         }
     }
 
-    public function handleGetTransaction($vpos, $id) {
+    public function handleGetTransaction($vpos, $id)
+    {
         $response_data = $vpos->getTransaction($id);
 
         if ($response_data["code"] == 200) {

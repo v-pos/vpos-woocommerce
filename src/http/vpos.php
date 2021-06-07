@@ -18,7 +18,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Vpos {
+class Vpos
+{
     private $api_endpoint;
     private $pos_id;
     private $token;
@@ -31,15 +32,17 @@ class Vpos {
     private $http_message;
     private $LOCATION_INDEX = 27;
     private $body;
-    private $data = array("message"=>null, "code"=>null, "location"=>null, "body"=>null, "decoded_body"=>null); 
+    private $data = array("message"=>null, "code"=>null, "location"=>null, "body"=>null, "decoded_body"=>null);
 
-    public function getLocation() {
+    public function getLocation()
+    {
         return $this->location;
     }
 
     // Since we are not able to get the headers in an organized way using CURL PHP, we use the function
     // below to acquire the necessary response headers
-    public function getResponse() {
+    public function getResponse()
+    {
         if ($this->contains($this->http_response_header, "Accepted") == 1) {
             $this->http_message =  "Accepted";
             $this->http_code = 202;
@@ -123,7 +126,8 @@ class Vpos {
         return $this->data;
     }
 
-    public function __construct($pos_id, $token, $payment_url, $refund_url, $mode) {
+    public function __construct($pos_id, $token, $payment_url, $refund_url, $mode)
+    {
         if ($mode == "yes") {
             $this->api_endpoint = "https://sandbox.vpos.ao/api/v1";
         } else {
@@ -137,13 +141,15 @@ class Vpos {
         $this->pos_id       = $pos_id;
     }
 
-    public function contains($haystack, $needle, $caseSensitive = false) {
+    public function contains($haystack, $needle, $caseSensitive = false)
+    {
         return $caseSensitive ?
-                (strpos($haystack, $needle) === FALSE ? FALSE : TRUE):
-                (stripos($haystack, $needle) === FALSE ? FALSE : TRUE);
+                (strpos($haystack, $needle) === false ? false : true):
+                (stripos($haystack, $needle) === false ? false : true);
     }
 
-    protected function handle_headers($curl, $header_line) {
+    protected function handle_headers($curl, $header_line)
+    {
         if ($this->contains($header_line, "HTTP/1.1") == 1) {
             $this->http_response_header = $header_line;
         }
@@ -154,7 +160,8 @@ class Vpos {
         return strlen($header_line);
     }
 
-    public function newPayment($mobile, $amount) {
+    public function newPayment($mobile, $amount)
+    {
         $request_data["amount"]       = $amount;
         $request_data["mobile"]       = $mobile;
         $request_data["type"]         = "payment";
@@ -180,7 +187,8 @@ class Vpos {
         return $this->getResponse();
     }
 
-    public function pollResource($id) {
+    public function pollResource($id)
+    {
         curl_setopt($this->curl, CURLOPT_URL, $this->api_endpoint  . "/requests/" . $id);
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->curl, CURLOPT_HEADERFUNCTION, array($this, "handle_headers"));
@@ -198,14 +206,16 @@ class Vpos {
         return $this->getResponse();
     }
 
-    public function organizeResponseData($response) {
+    public function organizeResponseData($response)
+    {
         $this->data['body'] = $response;
         $this->data['decoded_body'] = json_decode($response);
         $this->data['code'] = curl_getinfo($this->curl, CURLINFO_HTTP_CODE);
         return $this->data;
     }
 
-    public function getTransaction($id) {
+    public function getTransaction($id)
+    {
         curl_setopt($this->curl, CURLOPT_URL, $this->api_endpoint  . "/transactions/" . $id);
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($this->curl, CURLOPT_ENCODING, "");

@@ -52,7 +52,8 @@ $handler = new RequestHandler();
 $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url, $mode);
 
 
-function register_transaction($uuid, $mobile, $amount, $transaction_id) {
+function register_transaction($uuid, $mobile, $amount, $transaction_id)
+{
     global $wpdb;
 
     $status_reason = null;
@@ -61,7 +62,7 @@ function register_transaction($uuid, $mobile, $amount, $transaction_id) {
     $order_id = $_COOKIE['vpos_order_id'];
 
     $transaction = new Transaction($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
-	$transacion_repository = new TransactionRepository($wpdb);
+    $transacion_repository = new TransactionRepository($wpdb);
     $transacion_repository->insert_transaction($transaction);
 }
 

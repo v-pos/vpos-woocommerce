@@ -1,30 +1,34 @@
 <?php
 
-class TransactionRepository {
+class TransactionRepository
+{
     private $db;
     private $transactions_table;
 
-    public function __construct($wpdb) {
+    public function __construct($wpdb)
+    {
         $this->db = $wpdb;
         $this->transactions_table = $this->db->prefix . 'vpos_woocommerce_transacations';
     }
     
-    public function get_transaction($uuid) {  
+    public function get_transaction($uuid)
+    {
         return $this->db->get_results(
-          "SELECT * FROM $this->transactions_table WHERE ID = '$uuid'"
-        );
+            "SELECT * FROM $this->transactions_table WHERE ID = '$uuid'"
+        )[0];
     }
 
-    public function insert_transaction($transaction) {
-        $this->db->insert( 
-          $this->transactions_table, 
-          array(
+    public function insert_transaction($transaction)
+    {
+        $this->db->insert(
+            $this->transactions_table,
+            array(
             'id' => $transaction->get_uuid(),
             'transaction_id' => $transaction->get_transaction_id(),
             'status' => $transaction->get_status(),
             'type' => $transaction->get_type(),
             'amount' => $transaction->get_amount(),
-            'mobile' => $transaction->get_mobile(), 
+            'mobile' => $transaction->get_mobile(),
             'order_id' => $transaction->get_order_id(),
             'status_reason' => $transaction->get_status_reason(),
             'created_at' => current_time('mysql'),
@@ -34,7 +38,8 @@ class TransactionRepository {
     }
 
     // To upgrade table see wordpress documentation: https://codex.wordpress.org/Creating_Tables_with_Plugins
-    public function create_transactions_table() {
+    public function create_transactions_table()
+    {
         $charset_collate = $this->db->get_charset_collate();
 
         $sql = "CREATE TABLE IF NOT EXISTS $this->transactions_table (
@@ -58,7 +63,8 @@ class TransactionRepository {
         dbDelta($sql);
     }
     
-    public function update_transaction($id, $transaction) {
+    public function update_transaction($id, $transaction)
+    {
         return $this->db->update($this->transactions_table, array(
           "type" => $transaction->get_type(),
           "status" => $transaction->get_status(),
@@ -67,7 +73,5 @@ class TransactionRepository {
         ), array(
           "id" => $id
         ));
-      }
+    }
 }
-
-?>

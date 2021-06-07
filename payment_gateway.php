@@ -69,18 +69,21 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         );
     }
 
-    private function is_valid_angolan_number($mobile) {
+    private function is_valid_angolan_number($mobile)
+    {
         return strlen($mobile) == 9;
     }
 
-    private function strip_prefix_from_angolan_number($mobile) {
+    private function strip_prefix_from_angolan_number($mobile)
+    {
         $mobile = trim($mobile);
         $mobile = str_replace("+244", "", $mobile);
         $mobile = str_replace("00244", "", $mobile);
         return $mobile;
     }
 
-    private function get_customer_billing_number($order_id) {
+    private function get_customer_billing_number($order_id)
+    {
         $order = new WC_Order($this->order_id);
         return $order->get_billing_phone();
     }

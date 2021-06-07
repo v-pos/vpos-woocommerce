@@ -7,13 +7,13 @@ require(VPOS_DIR . "src/db/repositories/transaction_repository.php");
 
 class VPOS_Routes extends WP_REST_Controller
 {
-
     public function register_routes()
     {
         $namespace = "vpos-woocommerce/v1";
         $base = "cart";
 
-        // Endpoint -> http://your-site.com/wp-json/vpos-woocommerce/v1/cart/fc4d77b0-a4c2-4417-b537-a62f7c88dd06/confirmation
+        // This route will generate the following URI:
+        // http://your-site.com/wp-json/vpos-woocommerce/v1/cart/fc4d77b0-a4c2-4417-b537-a62f7c88dd06/confirmation
         register_rest_route($namespace, $base . "/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/confirmation", array(
             array(
                 "methods" => "POST",
@@ -24,6 +24,8 @@ class VPOS_Routes extends WP_REST_Controller
                 'permission_callback' => '__return_true'
             )
         ));
+        // This route will generate the following URI:
+        // http://your-site.com/wp-json/vpos-woocommerce/v1/cart/fc4d77b0-a4c2-4417-b537-a62f7c88dd06
         register_rest_route($namespace, $base . "/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}", array(
             array(
                 "methods" => "GET",
@@ -46,16 +48,19 @@ class VPOS_Routes extends WP_REST_Controller
 
         $result = $transaction_repository->get_transaction($uuid);
 
-        if (count($result) == 0)
-        {
+        if ($result == null) {
             $message = json_encode(array(
                 "error" => "transaction not found"
             ));
             return new WP_REST_Response($message, 404);
         }
 
-        $transaction_status = $result[0]->status;
-        return new WP_REST_Response($transaction_status, 200);
+        $response = json_encode(array(
+            "status" => $result->status,
+            "status_reason" => $result->status_reason
+        ));
+
+        return new WP_REST_Response($response, 200);
     }
 
     /**
@@ -80,45 +85,64 @@ class VPOS_Routes extends WP_REST_Controller
 
         $result = $transaction_repository->get_transaction($transaction_uuid);
 
-        if (count($result) == 0) {
+        if ($result == null) {
             $message = json_encode(array(
                 "error" => "transaction not found"
             ));
             return new WP_REST_Response($message, 404);
         }
 
-        if ($result[0]->transaction_id != $body->{"id"}) {
+        if ($result->transaction_id != $body->{"id"}) {
             $message = json_encode(array(
                 "error" => "transaction not found"
             ));
             return new WP_REST_Response($message, 404);
         }
 
-        if ($result[0]->mobile != $body->{"mobile"}) {
+        if ($result->mobile != $body->{"mobile"}) {
             $message = json_encode(array(
                 "error" => "transaction not found"
             ));
             return new WP_REST_Response($message, 404);
         }
 
-        if ($result[0]->status == "accepted") {
-            return new WP_REST_Response(null, 200);
+        if ($result->status == "accepted" && $result->status == "rejected") {
+            return new WP_REST_Response(null, 201);
         }
 
-        $transaction_id = null;
-        $amount = null;
-        $mobile = null;
-        $status = $body->{"status"};
-        $status_reason = $body->{"status_reason"};
-        $type = $body->{"type"};
+        if ($body->{"status"} == "accepted") {
+            $transaction_id = null;
+            $amount = null;
+            $mobile = null;
+            $status = $body->{"status"};
+            $status_reason = $body->{"status_reason"};
+            $type = $body->{"type"};
 
-        $order_id = $result[0]->order_id;
-        VposOrderHandler::completeOrder($order_id);
-       
-        $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
-        $transaction_repository->update_transaction($transaction_uuid, $transaction_model);
+            VposOrderHandler::update_order($result->order_id);
+           
+            $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
+            $transaction_repository->update_transaction($transaction_uuid, $transaction_model);
+            
+            VposOrderHandler::flush_order_from_cookies();
+        }
         
-        VposOrderHandler::flushOrderFromCookies();
+        if ($body->{"status"} == "rejected") {
+            $transaction_id = null;
+            $amount = null;
+            $mobile = null;
+            $status = $body->{"status"};
+            $status_reason = $body->{"status_reason"};
+            $type = $body->{"type"};
+
+            $order_id = $result->order_id;
+            VposOrderHandler::update_order_status($order_id, 'failed');
+        
+            $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
+            $transaction_repository->update_transaction($transaction_uuid, $transaction_model);
+            
+            VposOrderHandler::flush_order_from_cookies();
+        }
+
         return new WP_REST_Response(null, 201);
     }
 
@@ -136,4 +160,3 @@ class VPOS_Routes extends WP_REST_Controller
         return str_replace("/confirmation", "", $modified_route);
     }
 }
-
