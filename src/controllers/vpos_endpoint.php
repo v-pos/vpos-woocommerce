@@ -108,6 +108,10 @@ class VPOS_Routes extends WP_REST_Controller
             return new WP_REST_Response($message, 404);
         }
 
+        if ($result->status == "accepted" && $result->status == "rejected") {
+            return new WP_REST_Response(null, 201);
+        }
+
         if ($body->{"status"} == "accepted") {
             $transaction_id = null;
             $amount = null;
