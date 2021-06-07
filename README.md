@@ -4,8 +4,6 @@
 
 [![](https://img.shields.io/badge/vPOS-OpenSource-blue.svg)](https://www.vpos.ao)
 
-The number #1 payment solution in Angola
-
 <p align="center"><a href="#"><img src="https://github.com/v-pos/vpos-woocommerce/blob/main/.wordpress-org/screenshot-3-0.5x.png" alt="vPOS"></a></p>
 
 This plugin currently works for the solutions listed below:
