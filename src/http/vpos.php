@@ -32,16 +32,22 @@ class Vpos
     private $http_message;
     private $LOCATION_INDEX = 27;
     private $body;
-    private $data = array("message"=>null, "code"=>null, "location"=>null, "body"=>null, "decoded_body"=>null);
+    private $data = array(
+        "message"=>null,
+        "code"=>null,
+        "location"=>null,
+        "body"=>null,
+        "decoded_body"=>null
+    );
 
-    public function getLocation()
+    public function get_ocation()
     {
         return $this->location;
     }
 
     // Since we are not able to get the headers in an organized way using CURL PHP, we use the function
     // below to acquire the necessary response headers
-    public function getResponse()
+    public function get_response()
     {
         if ($this->contains($this->http_response_header, "Accepted") == 1) {
             $this->http_message =  "Accepted";
@@ -160,7 +166,7 @@ class Vpos
         return strlen($header_line);
     }
 
-    public function newPayment($mobile, $amount)
+    public function new_payment($mobile, $amount)
     {
         $request_data["amount"]       = $amount;
         $request_data["mobile"]       = $mobile;
@@ -184,10 +190,10 @@ class Vpos
         ));
 
         curl_exec($this->curl);
-        return $this->getResponse();
+        return $this->get_response();
     }
 
-    public function pollResource($id)
+    public function poll_resource($id)
     {
         curl_setopt($this->curl, CURLOPT_URL, $this->api_endpoint  . "/requests/" . $id);
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
@@ -203,10 +209,10 @@ class Vpos
 
         curl_exec($this->curl);
 
-        return $this->getResponse();
+        return $this->get_response();
     }
 
-    public function organizeResponseData($response)
+    public function organize_response_data($response)
     {
         $this->data['body'] = $response;
         $this->data['decoded_body'] = json_decode($response);
@@ -214,7 +220,7 @@ class Vpos
         return $this->data;
     }
 
-    public function getTransaction($id)
+    public function get_transaction($id)
     {
         curl_setopt($this->curl, CURLOPT_URL, $this->api_endpoint  . "/transactions/" . $id);
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, 1);
@@ -228,6 +234,6 @@ class Vpos
         ));
 
         $response = curl_exec($this->curl);
-        return $this->organizeResponseData($response);
+        return $this->organize_response_data($response);
     }
 }
