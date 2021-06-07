@@ -121,7 +121,7 @@ class VPOS_Routes extends WP_REST_Controller
         put_billing_phone_number_in_cookies($mobile);
 
         // response_data contains headers we receive from vPOS
-        $response_data = $handler->handleNewPayment($vpos, $mobile, $amount); 
+        $response_data = $handler->handle_new_payment($vpos, $mobile, $amount); 
         $transaction_id = $response_data["location"];
 
         $status_reason = null;

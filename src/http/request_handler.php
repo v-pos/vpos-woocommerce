@@ -20,14 +20,9 @@ if (!defined('ABSPATH')) {
 
 class RequestHandler
 {
-    public function __construct()
+    public function handle_payment($vpos, $mobile, $amount)
     {
-        // Empty Constructor
-    }
-
-    public function handlePayment($vpos, $mobile, $amount)
-    {
-        $response_data = $vpos->newPayment($mobile, $amount);
+        $response_data = $vpos->new_payment($mobile, $amount);
 
         if ($response_data["message"] == "Accepted") {
             header('Content-Type: application/json');
@@ -40,15 +35,14 @@ class RequestHandler
         }
     }
 
-    public function handleNewPayment($vpos, $mobile, $amount)
+    public function handle_new_payment($vpos, $mobile, $amount)
     {
-        $response_data = $vpos->newPayment($mobile, $amount);
-        return $response_data;
+        return $vpos->new_payment($mobile, $amount);
     }
 
-    public function handlePollResource($vpos, $id)
+    public function handle_Poll_resource($vpos, $id)
     {
-        $response_data = $vpos->pollResource($id);
+        $response_data = $vpos->poll_Resource($id);
 
         if ($response_data["message"] == "See Other") {
             header('Content-Type: application/json');
@@ -61,9 +55,9 @@ class RequestHandler
         }
     }
 
-    public function handleGetTransaction($vpos, $id)
+    public function handle_get_transaction($vpos, $id)
     {
-        $response_data = $vpos->getTransaction($id);
+        $response_data = $vpos->get_transaction($id);
 
         if ($response_data["code"] == 200) {
             header('Content-Type: application/json');
