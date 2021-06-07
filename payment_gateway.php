@@ -58,9 +58,9 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         $billing_phone_number = $this->strip_prefix_from_angolan_number($billing_phone_number);
 
         if ($this->is_valid_angolan_number($billing_phone_number)) {
-            storeInfoInCookies($this->merchant, $this->get_order_total(), $this->order_id, $billing_phone_number);
+            put_in_cookies($this->merchant, $this->get_order_total(), $this->order_id, $billing_phone_number);
         } else {
-            storeInfoInCookies($this->merchant, $this->get_order_total(), $this->order_id, "");
+            put_in_cookies($this->merchant, $this->get_order_total(), $this->order_id, "");
         }
 
         return array(
