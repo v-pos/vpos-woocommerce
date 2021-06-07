@@ -541,10 +541,10 @@ date_default_timezone_set("Africa/Luanda");
 
 if (empty($_COOKIE['vpos_merchant'])) {
     echo("<script>location.href = '". site_url() ."'</script>");
-  } 
+}
 ?>
 
-<?php 
+<?php
     if (empty($_GET['id'])) {
         echo("<script>location.href = '". site_url() ."'</script>");
     }
@@ -553,7 +553,11 @@ if (empty($_COOKIE['vpos_merchant'])) {
 <!DOCTYPE html>
 <html>
   <head>
-    <title>vPOS Checkout - <?php if ($_COOKIE['vpos_merchant'] != "") { echo $_COOKIE['vpos_merchant']; } else { echo ""; } ?></title>
+    <title>vPOS Checkout - <?php if ($_COOKIE['vpos_merchant'] != "") {
+    echo $_COOKIE['vpos_merchant'];
+} else {
+    echo "";
+} ?></title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/google-libphonenumber@3.2.17/dist/libphonenumber.js" integrity="sha256-y7g6xQm+MB2sFTvdhBwEMDWg9sAUz9msCc2973e0wjg=" crossorigin="anonymous"></script>
   <head>
@@ -568,7 +572,11 @@ if (empty($_COOKIE['vpos_merchant'])) {
                     </tr>
                     <tr>
                         <th>Comerciante: </th>
-                        <th class="wg-info"><?php if ($_COOKIE['vpos_merchant'] != "") { echo $_COOKIE['vpos_merchant']; } else { echo ""; } ?></th>
+                        <th class="wg-info"><?php if ($_COOKIE['vpos_merchant'] != "") {
+    echo $_COOKIE['vpos_merchant'];
+} else {
+    echo "";
+} ?></th>
                     </tr>
                     <tr>
                         <th>Método de pagamento: </th>
@@ -666,26 +674,10 @@ if (empty($_COOKIE['vpos_merchant'])) {
 
     function completeOrder() {
         document.getElementById("url").innerText = "Ir para o sumário da compra"
-        document.getElementById("url").href = "<?php 
+        document.getElementById("url").href = "<?php
                     $order = wc_get_order($_COOKIE['vpos_order_id']);
-                    echo $order->get_checkout_order_received_url(); 
+                    echo $order->get_checkout_order_received_url();
         ?>";
-    }
-
-    function get(id) {
-      return axios.get(HANDLER_LOCATION + "?id=" + id + "&type=get",
-      {validateStatus: (status => status < 400)})
-      .then(function (response) {
-        if (response.status == 200) {
-          
-
-          return;
-        }
-      }).catch(function (error) {
-        var stateComponent = document.getElementById("state");
-        var state = errorComponent();
-        stateComponent.replaceWith(state);
-      });
     }
 
     function poll(id) {
@@ -694,32 +686,34 @@ if (empty($_COOKIE['vpos_merchant'])) {
       ,{validateStatus: (status) => status < 400 })
       .then(function (response) {
           this.state = "processing";
+          var body = JSON.parse(response.data);
+
           if (response.status == 200) {
-            if (response.data == "accepted") {
-            this.state == "confirmed";
-            var stateComponent = document.getElementById("state");
-            var state = succeedComponent();
-            stateComponent.replaceWith(state);
-            document.getElementById("submit").style.display = "none";
-            clearInterval(this.timer);
-            this.completeOrder();
-            return;
+            if (body.status === "accepted") {
+              this.state == "confirmed";
+              var stateComponent = document.getElementById("state");
+              var state = succeedComponent();
+              stateComponent.replaceWith(state);
+              document.getElementById("submit").style.display = "none";
+              clearInterval(this.timer);
+              this.completeOrder();
+              return;
           }
 
-          if (response.data.status == "rejected" && response.data.status_reason != null) {
+          if (body.status === "rejected" && body.status_reason != null) {
             this.state == "rejected";
             var stateComponent = document.getElementById("state");
             var state = errorComponent();
             stateComponent.replaceWith(state);
             clearInterval(this.timer);
-            showErrorMessage(response.data.status_reason);
+            showErrorMessage(body.status_reason);
             return;
           }
         } 
       }).catch(function (error){
-            var stateComponent = document.getElementById("state");
-            var state = errorComponent();
-            stateComponent.replaceWith(state);
+          var stateComponent = document.getElementById("state");
+          var state = errorComponent();
+          stateComponent.replaceWith(state);
       });
     }
 
