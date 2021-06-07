@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mobile = $_POST['mobile'];
     $amount = $_POST['amount'];
 
-    addPhoneToCookies($mobile);
+    put_billing_phone_number_in_cookies($mobile);
 
     $response_data = $handler->handleNewPayment($vpos, $mobile, $amount);
     $transaction_id = $response_data["location"];
