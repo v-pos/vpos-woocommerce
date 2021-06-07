@@ -49,7 +49,7 @@ class VPOS_Routes extends WP_REST_Controller
 
         $result = $transaction_repository->get_transaction($uuid);
 
-        if (count($result) == 0)
+        if ($result == null)
         {
             $message = json_encode(array(
                 "error" => "transaction not found"
@@ -57,8 +57,12 @@ class VPOS_Routes extends WP_REST_Controller
             return new WP_REST_Response($message, 404);
         }
 
-        $transaction_status = $result[0]->status;
-        return new WP_REST_Response($transaction_status, 200);
+        $response = json_encode(array(
+            "status" => $result->status,
+            "status_reason" => $result->status_reason
+        ));
+
+        return new WP_REST_Response($response, 200);
     }
 
     /**
@@ -83,21 +87,21 @@ class VPOS_Routes extends WP_REST_Controller
 
         $result = $transaction_repository->get_transaction($transaction_uuid);
 
-        if (count($result) == 0) {
+        if ($result == null) {
             $message = json_encode(array(
                 "error" => "transaction not found"
             ));
             return new WP_REST_Response($message, 404);
         }
 
-        if ($result[0]->transaction_id != $body->{"id"}) {
+        if ($result->transaction_id != $body->{"id"}) {
             $message = json_encode(array(
                 "error" => "transaction not found"
             ));
             return new WP_REST_Response($message, 404);
         }
 
-        if ($result[0]->mobile != $body->{"mobile"}) {
+        if ($result->mobile != $body->{"mobile"}) {
             $message = json_encode(array(
                 "error" => "transaction not found"
             ));
@@ -112,7 +116,7 @@ class VPOS_Routes extends WP_REST_Controller
             $status_reason = $body->{"status_reason"};
             $type = $body->{"type"};
 
-            $order_id = $result[0]->order_id;
+            $order_id = $result->order_id;
             VposOrderHandler::update_order_status($order_id, 'processing');
            
             $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
@@ -129,7 +133,7 @@ class VPOS_Routes extends WP_REST_Controller
             $status_reason = $body->{"status_reason"};
             $type = $body->{"type"};
 
-            $order_id = $result[0]->order_id;
+            $order_id = $result->order_id;
             VposOrderHandler::update_order_status($order_id, 'failed');
         
             $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
