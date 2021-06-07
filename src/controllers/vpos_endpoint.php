@@ -117,8 +117,9 @@ class VPOS_Routes extends WP_REST_Controller
             $status = $body->{"status"};
             $status_reason = $body->{"status_reason"};
             $type = $body->{"type"};
-
-            VposOrderHandler::update_order($result->order_id);
+            
+            $order_id = $result->order_id;
+            VposOrderHandler::update_order($order_id);
            
             $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
             $transaction_repository->update_transaction($transaction_uuid, $transaction_model);
