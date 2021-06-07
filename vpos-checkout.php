@@ -623,10 +623,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
     var state = "initial";
     var timer = null;
     var numberIsAdded = false;
-    const HANDLER_LOCATION = "<?php 
-     $plugin_path = str_replace("/var/www/html", "", VPOS_DIR);
-     echo home_url() . $plugin_path . 'handle.php'; 
-    ?>";
+    const payments_url = "<?php echo get_rest_url(null, "vpos-woocommerce/v1/payment"); ?>";
     const poll_url = "<?php echo home_url(). '/payment'; ?>";
   
     function isValidPhoneNumber(mobile) {
@@ -687,12 +684,10 @@ if (empty($_COOKIE['vpos_merchant'])) {
     }
 
     function sendPaymentRequest(amount, mobile) {
-      var form = new FormData();
-      form.append('mobile', mobile);
-      form.append('amount', parseFloat(amount));
-      return axios.post(HANDLER_LOCATION,
-       form,
-      headers)
+      return axios.post(payments_url, {
+        mobile: mobile,
+        amount: amount
+      },headers)
       .then(response => {
           const transaction_id = response.data;
           const redirect_url = "<?php echo get_rest_url(null, "vpos-woocommerce/v1/cart/vpos/"); ?>" + transaction_id;
