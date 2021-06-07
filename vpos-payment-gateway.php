@@ -24,13 +24,15 @@
     require_once(ABSPATH . "wp-admin/includes/class-wp-filesystem-direct.php");
     require_once("src/controllers/vpos_endpoint.php");
 
-    function register_vpos_routes() {
+    function register_vpos_routes()
+    {
         $routes = new VPOS_Routes();
         $routes->register_routes();
     }
     add_action("rest_api_init", "register_vpos_routes");
 
-    function move_checkout_file_to_themes_dir() {
+    function move_checkout_file_to_themes_dir()
+    {
         $checkout_file_path = __DIR__  . "/vpos-checkout.php";
         $poll_file_path = __DIR__  . "/vpos-poll.php";
         $current_themes_path = get_template_directory();
@@ -38,7 +40,7 @@
         $filesystem = new WP_Filesystem_Direct(false);
 
         if ($filesystem->exists($checkout_file_path)) {
-            if($filesystem->copy($checkout_file_path, $current_themes_path . "/vpos-checkout.php", true)) {
+            if ($filesystem->copy($checkout_file_path, $current_themes_path . "/vpos-checkout.php", true)) {
             } else {
                 error_log("failed to copy file from " . $checkout_file_path . " to " . $current_themes_path);
             }
@@ -47,7 +49,7 @@
         }
 
         if ($filesystem->exists($poll_file_path)) {
-            if($filesystem->copy($poll_file_path, $current_themes_path . "/vpos-poll.php", true)) {
+            if ($filesystem->copy($poll_file_path, $current_themes_path . "/vpos-poll.php", true)) {
             } else {
                 error_log("failed to copy file from " . $poll_file_path . " to " . $current_themes_path);
             }
@@ -56,11 +58,12 @@
         }
     }
 
-    function add_checkout_page() {
+    function add_checkout_page()
+    {
         $page_title = 'vpos-checkout';
         $checkout_page = get_page_by_title($page_title, 'OBJECT', 'page');
 
-        if(empty($checkout_page)) {
+        if (empty($checkout_page)) {
             wp_insert_post(
                 array(
                 'comment_status' => 'close',
@@ -76,11 +79,12 @@
         }
     }
 
-    function add_poll_page() {
+    function add_poll_page()
+    {
         $page_title = 'payment';
         $checkout_page = get_page_by_title($page_title, 'OBJECT', 'page');
         
-        if(empty($checkout_page)) {
+        if (empty($checkout_page)) {
             wp_insert_post(
                 array(
                 'comment_status' => 'close',
@@ -96,7 +100,8 @@
         }
     }
 
-    function hide_vpos_pages_from_website($args) {
+    function hide_vpos_pages_from_website($args)
+    {
         $vpos_checkout_page = get_page_by_title('vpos-checkout', 'OBJECT', 'page');
         $vpos_poll_page = get_page_by_title('payment', 'OBJECT', 'page');
 
@@ -106,15 +111,17 @@
     }
     add_filter('wp_page_menu_args', 'hide_vpos_pages_from_website', 999, 1);
 
-    function create_transactions_table() {
+    function create_transactions_table()
+    {
         global $wpdb;
         $transaction_repository = new TransactionRepository($wpdb);
         $transaction_repository->create_transactions_table();
     }
 
-    function run_init_commands_after_installation() {
+    function run_init_commands_after_installation()
+    {
         $slug = (dirname(plugin_basename(__FILE__)));
-        add_option( 'Activated_Plugin', $slug);
+        add_option('Activated_Plugin', $slug);
         move_checkout_file_to_themes_dir();
         add_checkout_page();
         add_poll_page();
@@ -122,11 +129,12 @@
     }
     register_activation_hook(__FILE__, 'run_init_commands_after_installation');
       
-    function load_plugin() {
+    function load_plugin()
+    {
         $slug = (dirname(plugin_basename(__FILE__)));
-          if ( is_admin() && get_option( 'Activated_Plugin' ) == $slug) {
-              delete_option( 'Activated_Plugin' );
-          }
+        if (is_admin() && get_option('Activated_Plugin') == $slug) {
+            delete_option('Activated_Plugin');
+        }
     }
     add_action('admin_init', 'load_plugin');
 
@@ -186,7 +194,8 @@
             return $available_gateways;
         }
 
-        function addPhoneToCookies($order_billing_telephone) {
+        function addPhoneToCookies($order_billing_telephone)
+        {
             setcookie("vpos_order_billing_telephone", $order_billing_telephone, time() + 3600, "/");
         }
 
