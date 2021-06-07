@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) {
 
 class VposOrderHandler {
 
-    public static function update_order_status($order_id) {
+    public static function update_order($order_id) {
         $order = wc_get_order($order_id);
         if ($order->has_downloadable_item()) {
             $order->update_status("processing");
