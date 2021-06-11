@@ -13,10 +13,10 @@ class TransactionRepository implements Repository
         $this->table = $this->db->prefix . 'vpos_woocommerce_transacations';
     }
     
-    public function get($uuid)
+    public function get($id)
     {
         return $this->db->get_results(
-            "SELECT * FROM $this->table WHERE ID = '$uuid'"
+            "SELECT * FROM $this->table WHERE ID = '$id'"
         )[0];
     }
 
@@ -32,6 +32,7 @@ class TransactionRepository implements Repository
             'amount' => $transaction->get_amount(),
             'mobile' => $transaction->get_mobile(),
             'order_id' => $transaction->get_order_id(),
+            'nonce' => $transaction->get_nonce(),
             'status_reason' => $transaction->get_status_reason(),
             'created_at' => current_time('mysql'),
             'updated_at' => null
@@ -51,6 +52,7 @@ class TransactionRepository implements Repository
             amount varchar(255),
             mobile varchar(255),
             order_id varchar(255),
+            nonce varchar(255),
             status_reason varchar(255),
             created_at timestamp,
             updated_at timestamp,
