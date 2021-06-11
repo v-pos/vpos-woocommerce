@@ -32,10 +32,50 @@ class VposOrderHandler
                 $order->update_status("processing");
             }
         } elseif (count($products) >= 2) {
-            $order->update_status("processing");
+            $results = VposOrderHandler::get_product_types_binary_list($products);
+            $sum = array_sum($results);
+
+            if (VposOrderHandler::all_products_are_downloable($sum)) {
+                $order->update_status("completed");
+            } elseif (VposOrderHandler::all_products_are_not_downloadble($sum, $results)) {
+                $order->update_status("processing");
+            } elseif (VposOrderHandler::products_are_diverse($sum, $results)) {
+                $order->update_status("processing");
+            }
         } else {
             error_log("can't have order with 0 items");
         }
+    }
+
+    public static function get_product_types_binary_list($products)
+    {
+        $results = array();
+            
+        foreach ($products as $key=>$item) {
+            $_product = new WC_Product($item['id']);
+            if ($_product->is_downloadable()) {
+                $results[$key] = 0;
+            } else {
+                $results[$key] = 1;
+            }
+        }
+
+        return $results;
+    }
+
+    public static function products_are_diverse($sum, $results)
+    {
+        return $sum > 0 && $sum < count($results);
+    }
+
+    public static function all_products_are_downloable($sum)
+    {
+        return $sum == 0;
+    }
+
+    public static function all_products_are_not_downloadble($sum, $results)
+    {
+        return $sum == count($results);
     }
     
     public static function update_order_status($order_id, $status)

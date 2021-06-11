@@ -22,11 +22,11 @@
 
     require_once(ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php');
     require_once(ABSPATH . "wp-admin/includes/class-wp-filesystem-direct.php");
-    require_once("src/controllers/vpos_endpoint.php");
+    require_once("src/controllers/vpos_controller.php");
 
     function register_vpos_routes()
     {
-        $routes = new VPOS_Routes();
+        $routes = new VposController();
         $routes->register_routes();
     }
     add_action("rest_api_init", "register_vpos_routes");
@@ -115,7 +115,7 @@
     {
         global $wpdb;
         $transaction_repository = new TransactionRepository($wpdb);
-        $transaction_repository->create_transactions_table();
+        $transaction_repository->create_table();
     }
 
     function run_init_commands_after_installation()
@@ -192,6 +192,11 @@
                 $available_gateways['vpos']->order_button_text = "Proceder com Muticaixa Express";
             }
             return $available_gateways;
+        }
+
+        function put_id_in_cookies($uuid)
+        {
+            setcookie("vpos_id", $uuid, time() + 3600, "/");
         }
 
         function put_billing_phone_number_in_cookies($order_billing_telephone)
