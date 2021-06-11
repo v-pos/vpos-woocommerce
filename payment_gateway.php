@@ -62,10 +62,12 @@ class WP_Vpos_Gateway extends WC_Payment_Gateway
         } else {
             put_in_cookies($this->merchant, $this->get_order_total(), $this->order_id, "");
         }
+        $id = uuid();
+        $_SESSION["id"] = $id;
 
         return array(
             'result'   => 'success',
-            'redirect' => site_url() . "/" . $this->page_id
+            'redirect' => site_url() . "/" . $this->page_id . "?id=" . $id
         );
     }
 
