@@ -1,27 +1,29 @@
 <?php
 
-class TransactionRepository
+require VPOS_DIR . "/src/db/interfaces/repository.php";
+
+class TransactionRepository implements BaseRepository
 {
     private $db;
-    private $transactions_table;
+    private $table;
 
     public function __construct($wpdb)
     {
         $this->db = $wpdb;
-        $this->transactions_table = $this->db->prefix . 'vpos_woocommerce_transacations';
+        $this->table = $this->db->prefix . 'vpos_woocommerce_transacations';
     }
     
-    public function get_transaction($uuid)
+    public function get($uuid)
     {
         return $this->db->get_results(
-            "SELECT * FROM $this->transactions_table WHERE ID = '$uuid'"
+            "SELECT * FROM $this->table WHERE ID = '$uuid'"
         )[0];
     }
 
-    public function insert_transaction($transaction)
+    public function insert($transaction)
     {
         $this->db->insert(
-            $this->transactions_table,
+            $this->table,
             array(
             'id' => $transaction->get_uuid(),
             'transaction_id' => $transaction->get_transaction_id(),
@@ -37,12 +39,11 @@ class TransactionRepository
         );
     }
 
-    // To upgrade table see wordpress documentation: https://codex.wordpress.org/Creating_Tables_with_Plugins
-    public function create_transactions_table()
+    public function create_table()
     {
         $charset_collate = $this->db->get_charset_collate();
 
-        $sql = "CREATE TABLE IF NOT EXISTS $this->transactions_table (
+        $sql = "CREATE TABLE IF NOT EXISTS $this->table (
             id varchar(255) PRIMARY KEY NOT NULL,
             transaction_id varchar(255),
             status varchar(255),
@@ -63,9 +64,9 @@ class TransactionRepository
         dbDelta($sql);
     }
     
-    public function update_transaction($id, $transaction)
+    public function update($id, $transaction)
     {
-        return $this->db->update($this->transactions_table, array(
+        return $this->db->update($this->table, array(
           "type" => $transaction->get_type(),
           "status" => $transaction->get_status(),
           "status_reason" => $transaction->get_status_reason(),
@@ -73,5 +74,9 @@ class TransactionRepository
         ), array(
           "id" => $id
         ));
+    }
+
+    public function delete($id) {
+      // TODO
     }
 }
