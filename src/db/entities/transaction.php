@@ -10,8 +10,9 @@ class Transaction
     private $status_reason;
     private $type;
     private $order_id;
+    private $nonce;
 
-    public function __construct($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id)
+    public function __construct($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id, $nonce)
     {
         $this->uuid = trim($uuid);
         $this->transaction_id = trim($transaction_id);
@@ -21,6 +22,7 @@ class Transaction
         $this->status_reason = trim($status_reason);
         $this->type = trim($type);
         $this->order_id = trim($order_id);
+        $this->nonce = trim($nonce);
     }
 
     public function get_uuid()
@@ -61,5 +63,10 @@ class Transaction
     public function get_order_id()
     {
         return $this->order_id;
+    }
+
+    public function get_nonce()
+    {
+        return $this->nonce;
     }
 }
