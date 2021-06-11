@@ -2,7 +2,7 @@
 
 require VPOS_DIR . "/src/db/interfaces/repository.php";
 
-class TransactionRepository implements BaseRepository
+class TransactionRepository implements Repository
 {
     private $db;
     private $table;
