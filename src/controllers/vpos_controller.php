@@ -103,10 +103,10 @@ class VposController extends WP_REST_Controller
         }
 
         if (empty($body->{"amount"})) {
-            return new WP_REST_Response(null,  400);
+            return new WP_REST_Response(null, 400);
         }
 
-        $data = base64_encode(current_time('mysql') . uuid());
+        $data = base64_encode(current_time('mysql') . ":" . uuid() . ":" . $body->{"mobile"} . ":" . $body->{"mobile"} . ":" . $pos_id);
         $nonce = hash_hmac('sha256', $data, $token, false);
 
         $uuid = $_SESSION["id"];
@@ -128,7 +128,7 @@ class VposController extends WP_REST_Controller
         put_billing_phone_number_in_cookies($mobile);
 
         // response_data contains headers we receive from vPOS
-        $response_data = $handler->handle_new_payment($vpos, $mobile, $amount); 
+        $response_data = $handler->handle_new_payment($vpos, $mobile, $amount);
         $transaction_id = $response_data["location"];
 
         $status_reason = null;
@@ -136,7 +136,7 @@ class VposController extends WP_REST_Controller
         $type = null;
         $order_id = $_COOKIE['vpos_order_id'];
 
-        $transaction = new Transaction($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
+        $transaction = new Transaction($uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id, $nonce);
         global $wpdb;
         $transacion_repository = new TransactionRepository($wpdb);
         $transacion_repository->insert($transaction);
@@ -185,6 +185,11 @@ class VposController extends WP_REST_Controller
         $body = json_decode($request->get_body());
         $route = $request->get_route();
         $transaction_uuid = $this->extract_uuid_from_route($route);
+        $nonce = $request->get_query_params()["nonce"];
+
+        if (empty($nonce)) {
+            return new WP_REST_Response(null, 400);
+        }
 
         global $wpdb;
         $transaction_repository = new TransactionRepository($wpdb);
@@ -196,6 +201,10 @@ class VposController extends WP_REST_Controller
                 "error" => "transaction not found"
             ));
             return new WP_REST_Response($message, 404);
+        }
+
+        if ($result->nonce != $nonce) {
+            return new WP_REST_Response(null, 400);
         }
 
         if ($result->transaction_id != $body->{"id"}) {
@@ -211,6 +220,12 @@ class VposController extends WP_REST_Controller
             ));
             return new WP_REST_Response($message, 404);
         }
+        
+        $order = wc_get_order($result->order_id);
+        
+        if ($order->is_paid() || $order->has_status("processing") || $order->has_status("completed")) {
+            return new WP_REST_Response(null, 400);
+        }
 
         if ($result->status == "accepted" && $result->status == "rejected") {
             return new WP_REST_Response(null, 201);
@@ -223,11 +238,12 @@ class VposController extends WP_REST_Controller
             $status = $body->{"status"};
             $status_reason = $body->{"status_reason"};
             $type = $body->{"type"};
+            $nonce = null;
             
             $order_id = $result->order_id;
             VposOrderHandler::update_order($order_id);
            
-            $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
+            $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id, $nonce);
             $transaction_repository->update($transaction_uuid, $transaction_model);
             
             VposOrderHandler::flush_order_from_cookies();
@@ -240,11 +256,12 @@ class VposController extends WP_REST_Controller
             $status = $body->{"status"};
             $status_reason = $body->{"status_reason"};
             $type = $body->{"type"};
+            $nonce = null;
 
             $order_id = $result->order_id;
             VposOrderHandler::update_order_status($order_id, 'failed');
         
-            $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id);
+            $transaction_model = new Transaction($transaction_uuid, $transaction_id, $amount, $mobile, $status, $status_reason, $type, $order_id, $nonce);
             $transaction_repository->update($transaction_uuid, $transaction_model);
             
             VposOrderHandler::flush_order_from_cookies();
