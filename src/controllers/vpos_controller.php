@@ -106,7 +106,7 @@ class VposController extends WP_REST_Controller
             return new WP_REST_Response(null, 400);
         }
 
-        $data = base64_encode(current_time('mysql') . ":" . uuid() . ":" . $body->{"mobile"} . ":" . $body->{"mobile"} . ":" . $pos_id);
+        $data = base64_encode(current_time('mysql') . ":" . uuid() . ":" . $body->{"mobile"} . ":" . $body->{"amount"} . ":" . $pos_id);
         $nonce = hash_hmac('sha256', $data, $token, false);
 
         $uuid = $_SESSION["id"];
