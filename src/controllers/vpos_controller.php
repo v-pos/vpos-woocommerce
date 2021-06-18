@@ -223,7 +223,7 @@ class VposController extends WP_REST_Controller
         
         $order = wc_get_order($result->order_id);
         
-        if ($order->is_paid() || $order->has_status("processing") || $order->has_status("completed")) {
+        if ($order->is_paid() || $order->has_status("processing") || $order->has_status("completed") || $order->has_status("failed")) {
             return new WP_REST_Response(null, 201);
         }
 
