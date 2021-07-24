@@ -13,7 +13,7 @@ This plugin currently works for the solutions listed below:
 ## Installation and Configuration
 
 1. Download plugin from vPOS Github page [here](https://github.com/v-pos/vpos-woocommerce)
-2. Install plugin using Wordpress standard procedure (uploading the file obtained from the precious step)
+2. Install plugin using Wordpress standard procedure (uploading the file obtained from the previous step)
 3. Configure the settings using the required credentials:
     - The token is obtained from vPOS merchant portal
     - POS ID is provided by EMIS
