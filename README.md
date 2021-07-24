@@ -12,7 +12,12 @@ This plugin currently works for the solutions listed below:
 
 ## Installation and Configuration
 
-To install and configure visit our wiki: [vPOS Wiki](https://github.com/v-pos/vpos-woocommerce/wiki/Instalação-e-configuração)
+1. Download plugin from vPOS Github page [here](https://github.com/v-pos/vpos-woocommerce)
+2. Install plugin using Wordpress standard procedure (uploading the file obtained from the precious step)
+3. Configure the settings using the required credentials:
+    - The token is obtained from vPOS merchant portal
+    - POS ID is provided by EMIS
+    - Make sure to select the checkbox if using SANDBOX and uncheck if PRODUCTION
 
 ## Have any doubts?
 
