@@ -684,7 +684,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
     }
 
     function sendPaymentRequest(amount, mobile) {
-        document.getElementById("submit").disabled = true
+        //document.getElementById("submit").disabled = true
       return axios.post(payments_url, {
         mobile: mobile,
         amount: amount
