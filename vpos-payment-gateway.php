@@ -4,7 +4,7 @@
  * Plugin Name:       vPOS - Payment Gateway
  * Plugin URI:        https://github.com/v-pos/vpos-woocommerce
  * Description:       Uma melhor forma de aceitar pagamentos.
- * Version:           1.1.1
+ * Version:           1.1
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            vPOS
