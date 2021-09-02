@@ -117,10 +117,9 @@ class VposController extends WP_REST_Controller
         $pos_id = $this->settings['gpo_pos_id'];
         $payment_url = $payment_callback_url;
         $refund_url = "https://hard_coded_link"; // Leave this here for now, until vPOS makes it optional
-        $mode = $this->settings['vpos_environment'];
 
         $handler = new RequestHandler();
-        $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url, $mode);
+        $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url);
 
         $mobile = $body->{"mobile"};
         $amount = $body->{"amount"};
