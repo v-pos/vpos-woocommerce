@@ -613,7 +613,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
             </div>
         </div>
         <div class="wg-secure">
-            <a id="url" href=<?php echo wc_get_checkout_url(); ?>;
+            <a id="url" href=<?php echo wc_get_checkout_url(); ?>
             >Voltar para o Checkout </a>
         </div>
     <script>
