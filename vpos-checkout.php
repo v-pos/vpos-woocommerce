@@ -642,7 +642,7 @@ if (empty($_COOKIE['vpos_merchant'])) {
           return true;
         case '900002004':
           return true;
-        case '900003004':
+        case '900003000':
           return true;
         default:
           return false;
