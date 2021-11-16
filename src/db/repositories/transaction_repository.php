@@ -10,7 +10,7 @@ class TransactionRepository implements Repository
     public function __construct($wpdb)
     {
         $this->db = $wpdb;
-        $this->table = $this->db->prefix . 'vpos_woocommerce_transacations';
+        $this->table = $this->db->prefix . 'vpos_woocommerce_transactions';
     }
     
     public function get($id)

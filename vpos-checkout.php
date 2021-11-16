@@ -627,9 +627,26 @@ if (empty($_COOKIE['vpos_merchant'])) {
     const poll_url = "<?php echo home_url(). '/payment'; ?>";
   
     function isValidPhoneNumber(mobile) {
-      var phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
-      var number = phoneUtil.parse("+244" + mobile);
-      return phoneUtil.isValidNumberForRegion(number, "AO");
+      if (isSandboxNumber(mobile)) {
+        return true;
+      } else {
+        var phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
+        var number = phoneUtil.parse("+244" + mobile);
+        return phoneUtil.isValidNumberForRegion(number, "AO");
+      }
+    }
+
+    function isSandboxNumber(mobile) {
+      switch (mobile) {
+        case '900000000':
+          return true;
+        case '900002004':
+          return true;
+        case '900003000':
+          return true;
+        default:
+          return false;
+      }
     }
 
     function checkMobileNumber() {
