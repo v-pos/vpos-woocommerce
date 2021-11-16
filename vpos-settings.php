@@ -35,12 +35,5 @@ return array(
         'type' => 'text',
         'description' => __('O ID do ponto de venda fornecido pela EMIS', 'vPOS'),
         'desc_tip' => true
-    ),
-    'vpos_environment' => array(
-        'title'       => __('Modo Sandbox', 'vPOS'),
-        'type'        => 'checkbox',
-        'label'       => __('Habilitar modo Sandbox', 'vPOS'),
-        'default'     => 'no',
-        'description' => "O ambiente que será usado e.g SANDBOX ou PRODUCTION",
     )
 );
