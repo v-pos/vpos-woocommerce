@@ -189,7 +189,7 @@
             }
 
             if (array_key_exists('vpos', $available_gateways)) {
-                $available_gateways['vpos']->order_button_text = "Proceder com Muticaixa Express";
+                $available_gateways['vpos']->order_button_text = "Proceder com Multicaixa Express";
             }
             return $available_gateways;
         }
