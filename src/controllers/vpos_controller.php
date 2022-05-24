@@ -123,7 +123,7 @@ class VposController extends WP_REST_Controller
         $vpos = new Vpos($pos_id, $token, $payment_url, $refund_url, $mode);
 
         $mobile = $body->{"mobile"};
-        $amount = $body->{"amount"};
+        $amount = round($body->{"amount"}, 2);
 
         put_billing_phone_number_in_cookies($mobile);
 
